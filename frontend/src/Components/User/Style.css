@@ -1,0 +1,11 @@
+span{
+    color : rgb(250, 76, 76);
+    font-size: 12px;
+    display:none
+}
+input:invalid[focus='true'] ~ span{
+    display: block;
+}
+input:invalid[focus='true']{
+    border: 1px solid red;
+}
