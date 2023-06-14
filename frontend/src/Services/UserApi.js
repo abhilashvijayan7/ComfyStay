@@ -1,5 +1,5 @@
 import userInstance from "../axios/axiosInstance"
 
-const userSignup = (value)=>{
+export const userSignup = (value)=>{
     return userInstance.post('/register',{...value})
 }

@@ -1,11 +1,15 @@
 import axios from "axios"
 import React from 'react'
+ import { ToastContainer, toast } from 'react-toastify';
+
 import { useState } from 'react'
-import userSignup from '../../Services/UserApi'
+import { Link, useNavigate } from "react-router-dom"
+import { userSignup } from '../../Services/UserApi'
 import './Style.css'
-// import Link from 'react-router-dom'
+
 
 function Signup() {
+  const navigate = useNavigate()
   const [inputs, setInputs] = useState({
     username: '',
     email: '',
@@ -22,9 +26,22 @@ function Signup() {
     errCpass: false
 
   })
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    const data= userSignup(value)
+    try {
+      const { data } = await userSignup(inputs)
+      if (data.status) {
+        navigate('/otp')
+      }else{
+        toast.error(data.message,{
+          position:'top-center'
+        })
+      }
+    }catch(error){
+toast.error(error.message,{
+  position:'top-center'
+})
+    }
   }
   const handleChange = (e) => {
     const name = e.target.name;
