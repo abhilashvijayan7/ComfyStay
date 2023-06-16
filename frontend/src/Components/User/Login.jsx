@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unknown-property */
 import React from 'react'
 import './Style.css'
 import { useState } from 'react'

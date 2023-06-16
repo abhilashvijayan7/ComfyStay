@@ -1,18 +1,36 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import OtpInput from 'react-otp-input';
-import {  useNavigate } from "react-router-dom";
+import { verifyOtp } from '../../Services/UserApi';
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify';
 // import { toast, ToastContainer } from "react-toastify";
 
 
 function Otp() {
   const [otp, setOtp] = useState('');
   const [errorMessage,setErrorMessage]=useState('');
-  const navigate=useNavigate()
-  const handleSubmit=()=>{
-    console.log('kumar');
+   const navigate=useNavigate()
+  // const location = useLocation()
+  // const input1 = location.inputs;
+
+  const handleSubmit=async()=>{
+    console.log("handlesubmit");
+  
     if (otp.length !== 4) {
      setErrorMessage('OTP must be 4 digit long')
       return;
+    }else{
+       const {data}= await verifyOtp(otp)
+       console.log(data)
+     if(!data.status){
+     
+      toast.error(data.message)
+    }else{
+     navigate('/login');
+    }
     }
   }
   return (
@@ -47,6 +65,7 @@ function Otp() {
         }}
        
       />
+     
       <div className="text-red-500 text-sm">{errorMessage}</div>
       <div className='pt-10'>
       <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md " type='submit' onClick={handleSubmit}>submit</button>

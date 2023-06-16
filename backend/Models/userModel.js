@@ -1,4 +1,5 @@
-const mongoose = require ('mongoose')
+/* eslint-disable no-undef */
+const mongoose = require ('mongoose');
 
 const userSchema = new mongoose.Schema({
     username:{
@@ -11,7 +12,8 @@ const userSchema = new mongoose.Schema({
     },
     phonenumber:{
         type:Number,
-        required:true
+        required:true,
+        index:{unique:true}
     },
     password:{
         type:String,
@@ -20,7 +22,11 @@ const userSchema = new mongoose.Schema({
     verified:{
         type:Boolean,
         default:false
+    },
+    blockStatus:{
+        type:Boolean,
+        default:false
     }
-})
+});
 
-module.exports=new mongoose.model("user",userSchema)
+module.exports = mongoose.model('user',userSchema);

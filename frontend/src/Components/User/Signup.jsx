@@ -1,6 +1,8 @@
-import axios from "axios"
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable no-unused-vars */
+
 import React from 'react'
- import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 
 import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
@@ -26,21 +28,22 @@ function Signup() {
     errCpass: false
 
   })
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await userSignup(inputs)
       if (data.status) {
+        console.log(inputs);
         navigate('/otp')
-      }else{
-        toast.error(data.message,{
-          position:'top-center'
+      } else {
+        toast.error(data.message, {
+          position: 'top-center'
         })
       }
-    }catch(error){
-toast.error(error.message,{
-  position:'top-center'
-})
+    } catch (error) {
+      toast.error(error.message, {
+        position: 'top-center'
+      })
     }
   }
   const handleChange = (e) => {
