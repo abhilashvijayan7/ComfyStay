@@ -6,3 +6,7 @@ export const userSignup = (value)=>{
 export const verifyOtp = (otp)=>{
     return userInstance.post('/verifyotp',{otp})
 }
+
+export const login =(value)=>{
+    return userInstance.post('/login',{...value})
+}

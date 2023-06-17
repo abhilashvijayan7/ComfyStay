@@ -1,11 +1,27 @@
+/* eslint-disable indent */
 /* eslint-disable no-empty */
 /* eslint-disable no-undef */
 const user = require('../Models/userModel');
 const serviceID = process.env.TWILIO_SERVICE_ID;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const bcrypt = require('bcrypt');
+
 const client = require('twilio')(accountSID, authToken);
+const maxAge = 3 * 24 * 60 * 60;
+const jwt = require ('jsonwebtoken');
 let newUser;
+// eslint-disable-next-line no-unused-vars
+const createToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRETE_KEY, {
+      expiresIn: maxAge
+    });
+  };
+  function hashPassword(password) {
+    const salt = bcrypt.genSaltSync();
+    return bcrypt.hashSync(password, salt);
+  }
+  
 module.exports.register = async (req, res) => {
     // eslint-disable-next-line no-unused-vars
     const { username, phonenumber, email, password, cpassword } = req.body;
@@ -46,7 +62,7 @@ module.exports.verifyOtp = (req,res)=>{
                     username:newUser.username, 
                     email:newUser.email,  
                     phonenumber:newUser.phonenumber,
-                    password:newUser.password,
+                    password:hashPassword(newUser.password),
                     verified:true
                 });
                 // eslint-disable-next-line no-unused-vars
@@ -58,3 +74,27 @@ module.exports.verifyOtp = (req,res)=>{
                 res.json({ status: false, message: ' Max check attempts reached' });
             }
         });};
+
+        // eslint-disable-next-line no-unused-vars
+        module.exports.login = async (req, res, next) => {
+            try {
+              const { email, password } = req.body;
+              const customer = await user.findOne({ email });
+              if (customer) {
+                const auth = await bcrypt.compare(password, customer.password);
+                if (auth) {
+                  const token = createToken(customer._id);
+          
+                  res.status(200).json({ user: customer, status: true, token });
+                } else {
+              res.status(401).json({message:'Incorrect password',status:false});
+                }
+              } else {
+              res.status(401).json({message:'Incorrect Email',status:false});
+
+              }
+            } catch (error) {
+           
+            }
+          };
+          

@@ -2,9 +2,20 @@
 /* eslint-disable react/no-unknown-property */
 import React from 'react'
 import './Style.css'
+import { Link, useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
 import { useState } from 'react'
+import {login} from '../../Services/UserApi'
+import { setUserDetails } from '../../features/setUser'
+import { useDispatch } from 'react-redux'
+
+
 
 function Login() {
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
+
     const [inputs, setInputs] = useState({
 
         email: '',
@@ -17,8 +28,27 @@ function Login() {
         errEmail: false,
         errPass: false
     })
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
+        try{
+            
+            const {data} = await login(inputs)
+            if(data.status){
+                localStorage.setItem("jwt", data.token)
+                dispatch(setUserDetails(data.user))
+                navigate('/')
+            }else{
+                toast.error(data.message, {
+                    position: 'top-center'
+                  })
+            }
+            
+        }catch(error){ 
+            toast.error(error.response.data.message, {
+                position: 'top-center'
+              })
+            /* empty */
+     }
     }
     const handleChange = (e) => {
         const name = e.target.name;
@@ -74,7 +104,8 @@ function Login() {
                                             id="password"
                                             name="password"
                                             type="password"
-                                            pattern="(?=^.{8,16}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                                            // pattern="(?=^.{8,16}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                                            pattern="^.{8,16}$"
                                             autoComplete="current-password"
                                             required
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
