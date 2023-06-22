@@ -67,7 +67,7 @@ module.exports.verifyOtp = (req,res)=>{
                 });
                 // eslint-disable-next-line no-unused-vars
                 const userdetails = await newMember.save();
-                res.json({ status: true, message: 'Your verification completed successfully'});
+                res.json({ status: true, message: 'Registered successfuly'});
 
             }
             if (verification_check.status === 429) {

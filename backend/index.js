@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const userRoutes = require('../backend/Routes/UserRoutes');
+const adminRoutes = require('../backend/Routes/AdminRoutes');
 app.use(bodyParser.json());
 const cookieParser = require('cookie-parser');
 app.listen(process.env.PORT,()=>{
@@ -31,5 +32,6 @@ app.use(cookieParser());
 //Middleware to parse form data
 
 app.use('/',userRoutes);
+app.use('/admin',adminRoutes);
 
  

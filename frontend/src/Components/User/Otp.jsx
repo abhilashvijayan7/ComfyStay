@@ -29,6 +29,7 @@ function Otp() {
      
       toast.error(data.message)
     }else{
+      toast(data.message)
      navigate('/login');
     }
     }
