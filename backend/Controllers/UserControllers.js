@@ -39,6 +39,7 @@ module.exports.register = async (req, res) => {
         res.json({ message: 'This email already exist', status: false });
       } else {
         newUser = req.body;
+        console.log(`${newUser},aaaaaaaaa`);
         client.verify.v2.services(serviceID)
           .verifications.create({ to: `+91${phonenumber}`, channel: 'sms' });
         res.json({ status: true });
@@ -79,7 +80,7 @@ module.exports.verifyOtp = (req, res) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-module.exports.login = async (req, res, next) => {
+module.exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const customer = await user.findOne({ email });
@@ -157,4 +158,17 @@ module.exports.newpassword = async (req, res) => {
   } catch (error) {
 
   }
+};
+module.exports.resentotp=(req,res)=>{
+  const { phonenumber } = forgotUser;
+  client.verify.v2.services(serviceID)
+  .verifications.create({ to: `+91${phonenumber}`, channel: 'sms' });
+res.json({ status:true ,message:'Otp resent success' });
+};
+
+module.exports.resentotpsignup=(req,res)=>{
+console.log(newUser);
+  client.verify.v2.services(serviceID)
+  .verifications.create({ to: `+91${newUser.phonenumber}`, channel: 'sms' });
+res.json({ status:true ,message:'Otp resent success' });
 };

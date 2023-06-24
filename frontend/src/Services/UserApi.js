@@ -20,3 +20,14 @@ export const verifyOtpForgot = (otp)=>{
 export const newPassword = (value)=>{
     return userInstance.post('/newpassword',{...value})
 }
+export const resentOtp = ()=>{
+    return userInstance.post('/resentotp')
+}
+
+export const resentOtpSignup = ()=>{
+    return userInstance.post('/resentotpsignup')
+}
+
+
+
+
