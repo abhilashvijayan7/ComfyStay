@@ -2,7 +2,7 @@
 
 const admin = require('../Models/AdminModel');
 const bcrypt = require('bcrypt');
-const jwt = require ('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const maxAge = 3 * 24 * 60 * 60;
 
 const createToken = (id) => {
@@ -11,22 +11,22 @@ const createToken = (id) => {
     });
 };
 
-module.exports.adminLogin= async(req,res)=>{
-    const {email,password}=req.body;
-    try{
-        const newAdmin = await admin.findOne ({email:email});
-        if(newAdmin){
-            const auth = await bcrypt.compare(password,newAdmin.password);
-            if(auth){
-                const token=await createToken(newAdmin.id);
-                res.json({message:'Admin login successful',token,status:true});
-            }else{
-                res.json({message:'Incorrect Password',status:false});
+module.exports.adminLogin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const newAdmin = await admin.findOne({ email: email });
+        if (newAdmin) {
+            const auth = await bcrypt.compare(password, newAdmin.password);
+            if (auth) {
+                const token = await createToken(newAdmin.id);
+                res.json({ message: 'Admin login successful', token, status: true });
+            } else {
+                res.json({ message: 'Incorrect Password', status: false });
             }
-        }else{
-            res.json({message:'Admin not Found.Please check your email'});
+        } else {
+            res.json({ message: 'Admin not Found.Please check your email' });
         }
-    }catch(error){
+    } catch (error) {
         console.log(error);
         res.json({ status: false, message: error.message });
     }

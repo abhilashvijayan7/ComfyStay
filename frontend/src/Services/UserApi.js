@@ -10,3 +10,13 @@ export const verifyOtp = (otp)=>{
 export const login =(value)=>{
     return userInstance.post('/login',{...value})
 }
+export const forgotpassword =(value)=>{
+    return userInstance.post('/forgotpassword',{...value})
+}
+
+export const verifyOtpForgot = (otp)=>{
+    return userInstance.post('/verifyotpforgot',{otp})
+}
+export const newPassword = (value)=>{
+    return userInstance.post('/newpassword',{...value})
+}

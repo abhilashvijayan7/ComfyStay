@@ -110,6 +110,7 @@ alt="Your Company"
                             onBlur={() => setFocus({ ...focus, errPass: true })}
                             focus={focus.errPass.toString()} /><span>password must have minimum 8 characters and atleast 1 uppercase,1 digit and 1 special character</span>
                     </div>
+                   
 
                 </div>
 

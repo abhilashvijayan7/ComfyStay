@@ -3,9 +3,9 @@
 import React from 'react'
 import './Style.css'
 import { Link, useNavigate } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useState } from 'react'
-import {login} from '../../Services/UserApi'
+import { login } from '../../Services/UserApi'
 import { setUserDetails } from '../../features/setUser'
 import { useDispatch } from 'react-redux'
 
@@ -28,27 +28,27 @@ function Login() {
         errEmail: false,
         errPass: false
     })
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            
-            const {data} = await login(inputs)
-            if(data.status){
+        try {
+
+            const { data } = await login(inputs)
+            if (data.status) {
                 localStorage.setItem("jwt", data.token)
                 dispatch(setUserDetails(data.user))
                 navigate('/')
-            }else{
+            } else {
                 toast.error(data.message, {
                     position: 'top-center'
-                  })
+                })
             }
-            
-        }catch(error){ 
+
+        } catch (error) {
             toast.error(error.response.data.message, {
                 position: 'top-center'
-              })
+            })
             /* empty */
-     }
+        }
     }
     const handleChange = (e) => {
         const name = e.target.name;
@@ -114,9 +114,15 @@ function Login() {
                                             onChange={handleChange}
                                             onBlur={() => setFocus({ ...focus, errPass: true })}
                                             focus={focus.errPass.toString()} /><span>password must have minimum 8 characters and atleast 1 uppercase,1 digit and 1 special character</span>
+                                        <div className='mt-6'>
+                                            <a href="/forgotpassword" className="text-sm text-center  text-black hover:text-gray-500">
+                                                Forgot password?
+                                            </a>
+                                        </div>
                                     </div>
 
                                 </div>
+
 
 
                                 <div>
