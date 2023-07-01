@@ -8,6 +8,7 @@ import UserHomePage from '../Pages/User/UserHomePage'
 import UserForgotPasswordPage from '../Pages/User/UserForgotPasswordPage'
 import UserOtpForgotPage from '../Pages/User/UserOtpForgotPage'
 import UserNewPasswordPage from '../Pages/User/UserNewPasswordPage'
+import PropertyDescribePage from '../Pages/User/PropertyDescribePage'
 function UserRouter() {
   return (
    <Routes>
@@ -18,7 +19,9 @@ function UserRouter() {
 <Route path='/forgotpassword' element={<UserForgotPasswordPage/>}/>
 <Route path='/otpforgot' element={<UserOtpForgotPage/>}/>
 <Route path='/newpassword' element={<UserNewPasswordPage/>}/>
+<Route path='/addyourhome' element={<PropertyDescribePage/>}/>
 
+/addyourhome
  
    </Routes>
   )
