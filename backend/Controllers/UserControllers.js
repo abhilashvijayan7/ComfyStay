@@ -10,6 +10,8 @@ const bcrypt = require('bcrypt');
 const client = require('twilio')(accountSID, authToken);
 const maxAge = 3 * 24 * 60 * 60;
 const jwt = require('jsonwebtoken');
+
+const userPropertyModel = require('../Models/UserPropertyModel');
 let newUser;
 // eslint-disable-next-line no-unused-vars
 let forgotUserId;
@@ -171,4 +173,45 @@ console.log(newUser);
   client.verify.v2.services(serviceID)
   .verifications.create({ to: `+91${newUser.phonenumber}`, channel: 'sms' });
 res.json({ status:true ,message:'Otp resent success' });
+};
+
+module.exports.propertysubmit =async(req,res)=>{
+  console.log('print req.body',req.body);
+try{
+  const exist = await userPropertyModel.findOne({propertynumber:req.body.propertynumber}).lean();
+ 
+  if(exist){
+    console.log('existtttttttttttt');
+    res.json({status:false,message:'The property already exist'});
+  }else{
+  console.log('not existtttt');
+await new userPropertyModel ({
+
+userId: req.user._id,
+hometype:  req.body.hometype,
+propertynumber:  req.body.propertynumber,
+address:  req.body.address,
+guests:  req.body.guests,
+bedrooms:  req.body.bedrooms,
+beds:  req.body.beds,
+bathrooms:  req.body.bathrooms,
+wifi:  req.body.wifi,
+tv:  req.body.tv,
+kitchen:  req.body.kitchen,
+washingmachine:  req.body.washingmachine,
+freeparking:  req.body.freeparking,
+paidparking:  req.body.paidparking,
+airconditioning:  req.body.airconditioning,
+dedicatedworkspace:  req.body.dedicatedworkspace,
+homephoto:  req.body.homephoto,
+homeprice:  req.body.homeprice
+
+}).save();
+res.json({ status: true, message: 'Property added successfuly' });
+
+  }
+}catch (error) {
+  res.json({ status: false, message: error.message });
+}
+
 };

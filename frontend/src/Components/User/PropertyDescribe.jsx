@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { useFormik } from 'formik'
+import {  toast } from 'react-toastify';
+import { propertySubmit } from '../../Services/UserApi';
 import * as Yup from 'yup'
+
 const initialValues = {
     hometype: 'home',
-    homeportion: 'an-entire-place',
+    propertynumber: '',
     address: '',
     guests: '1',
     bedrooms: '1',
@@ -22,8 +25,17 @@ const initialValues = {
     homeprice: '',
 
 }
-const onSubmit = (values) => {
-    console.log('form data', values);
+const onSubmit = async(values) => {
+    try{
+
+const {data} =  await propertySubmit(values)
+
+    }catch(error){
+        toast.error(error.message, {
+            position: 'top-center'
+          })
+    }
+    
 }
 
 // const validate =(values)=>{
@@ -56,6 +68,9 @@ const validationSchema = Yup.object().shape({
     homeprice: Yup.number()
         .typeError('Please enter a valid number')
         .required('This field is required'),
+    propertynumber:Yup.number()
+    .typeError('Please enter a valid number')
+    .required('This field is required')    
 
 })
 
@@ -105,7 +120,7 @@ function PropertyDescribe() {
                             >
                                 <option value="home">Home</option>
                                 <option value="flat/apartment">Flat/Apartment</option>
-                                <option value="hotel">Hotel</option>
+                                <option value="hotel">Hotel Room</option>
                             </select>
 
                         </div>
@@ -115,21 +130,28 @@ function PropertyDescribe() {
                         <div className="mb-4 sm:mb-0">
                             <label
                                 className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="homeportion"
+                                htmlFor="propertynumber"
                             >
-                                What type of place will guests have?
+                                Property number
                             </label>
-                            <select
-                                id="homeportion"
-                                name="homeportion"
-                                className="form-select block w-full sm:w-96 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                onChange={formik.handleChange}
-                                value={formik.values.homeportion}
-                            >
-                                <option value="an-entire-place">An entire place</option>
-                                <option value="a-private-room">A private room</option>
-                                <option value="a-shared-room">A shared room</option>
-                            </select>
+                            
+
+                            <input
+                                    type="text"
+                                    id="propertynumber"
+                                    name="propertynumber"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+
+                                    value={formik.values.propertynumber}
+                                    className="form-select block w-full sm:w-96 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                                    />
+                                {formik.touched.propertynumber && formik.errors.propertynumber ? <div className="text-red-500 text-sm"> {formik.errors.propertynumber}</div> : null}
+
+
+
+
+
                         </div>
 
 
@@ -561,6 +583,7 @@ function PropertyDescribe() {
 
 
                 </form>
+                
             </div>
 
         </>

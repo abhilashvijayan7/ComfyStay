@@ -33,6 +33,7 @@ function Login() {
         try {
 
             const { data } = await login(inputs)
+            console.log(data.token);
             if (data.status) {
                 localStorage.setItem("jwt", data.token)
                 dispatch(setUserDetails(data.user))

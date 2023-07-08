@@ -28,6 +28,10 @@ export const resentOtpSignup = ()=>{
     return userInstance.post('/resentotpsignup')
 }
 
+export const propertySubmit =(values)=>{
+    return userInstance.post('/propertysubmit',{...values})
+}
+
 
 
 
