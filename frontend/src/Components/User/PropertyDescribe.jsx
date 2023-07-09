@@ -1,84 +1,100 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify';
 import { propertySubmit } from '../../Services/UserApi';
 import * as Yup from 'yup'
 
-const initialValues = {
-  
-    hometype: 'home',
-    propertynumber: '',
-    address: '',
-    guests: '1',
-    bedrooms: '1',
-    beds: '1',
-    bathrooms: '1',
-    wifi: false,
-    tv: false,
-    kitchen: false,
-    washingmachine: false,
-    freeparking: false,
-    paidparking: false,
-    airconditioning: false,
-    dedicatedworkspace: false,
-    homephoto: '',
-    homeprice: '',
-
-}
-const onSubmit = async (values) => {
-    try {
-
-        const { data } = await propertySubmit(values)
-
-    } catch (error) {
-        toast.error(error.message, {
-            position: 'top-center'
-        })
-    }
-
-}
-
-// const validate =(values)=>{
-//     let errors = {}
-
-
-
-//     if(!values.address){
-//         errors.address='Required'
-//     }
-
-//     if(!values.homephoto){
-//         errors.homephoto='Required'
-//     }
-//     if(!values.homeprice){
-//         errors.homeprice='Required'
-//     } else if (!/^[1-9]\d*$/.test(values.homeprice)) {
-//         errors.homeprice = 'Invalid price';
-//       }
-
-
-
-
-//     return errors
-// }
-
-const validationSchema = Yup.object().shape({
-    address: Yup.string().required('This field is required'),
-    homephoto: Yup.string().required('This field is required'),
-    homeprice: Yup.number()
-        .typeError('Please enter a valid number')
-        .required('This field is required'),
-    propertynumber: Yup.number()
-        .typeError('Please enter a valid number')
-        .required('This field is required')
-
-})
 
 
 function PropertyDescribe() {
+    const initialValues = {
+
+        hometype: 'home',
+        propertynumber: '',
+        address: '',
+        guests: '1',
+        bedrooms: '1',
+        beds: '1',
+        bathrooms: '1',
+        wifi: false,
+        tv: false,
+        kitchen: false,
+        washingmachine: false,
+        freeparking: false,
+        paidparking: false,
+        airconditioning: false,
+        dedicatedworkspace: false,
+        homephoto: '',
+        homeprice: '',
+
+    }
+    const onSubmit = async (values) => {
+        try {
+
+            const { data } = await propertySubmit(values)
+            if (data.status) {
+                toast(data.message, {
+                    position: 'top-center',
+                })
+                navigate('/propertylist');
+            } else {
+                toast(data.message, {
+                    position: 'top-center'
+                })
+            }
+
+        } catch (error) {
+            toast.error(error.message, {
+                position: 'top-center'
+            })
+        }
+
+    }
+
+    // const validate =(values)=>{
+    //     let errors = {}
+
+
+
+    //     if(!values.address){
+    //         errors.address='Required'
+    //     }
+
+    //     if(!values.homephoto){
+    //         errors.homephoto='Required'
+    //     }
+    //     if(!values.homeprice){
+    //         errors.homeprice='Required'
+    //     } else if (!/^[1-9]\d*$/.test(values.homeprice)) {
+    //         errors.homeprice = 'Invalid price';
+    //       }
+
+
+
+
+    //     return errors
+    // }
+
+    const validationSchema = Yup.object().shape({
+        address: Yup.string().required('This field is required'),
+        homephoto: Yup.string().required('This field is required'),
+        homeprice: Yup.number()
+            .typeError('Please enter a valid number')
+            .required('This field is required'),
+        propertynumber: Yup.number()
+            .typeError('Please enter a valid number')
+            .required('This field is required')
+
+    })
+
+
+
+    const navigate = useNavigate();
     const [selectedImage, setSelectedImage] = useState(null);
 
 
@@ -101,13 +117,13 @@ function PropertyDescribe() {
             <header className="py-7 bg-gray-800">
                 <div className="flex items-center justify-center sm:justify-start">
                     <p className="text-white px-4 sm:px-12 text-2xl sm:text-3xl font-serif">
-                        ComfyStay
+                        AddProperty
                     </p>
                 </div>
             </header>
 
 
-            <div className=" m-20">
+            <div className=" m-10">
                 <form onSubmit={formik.handleSubmit}>
                     <div className="mb-4 flex flex-col sm:flex-row sm:justify-between">
 
@@ -512,11 +528,12 @@ function PropertyDescribe() {
 
                     <div className="flex justify-center items-center">
                         {selectedImage && (
-                            <div className="w-32 sm:w-48 h-32 sm:h-48 bg-red-500 mb-3">
-                                <img className="w-full h-full object-cover" src={selectedImage} alt="" />
+                            <div className="w-34 sm:w-52 h-34 sm:h-52 bg-white mb-3">
+                                <img className="w-full h-full object-contain" src={selectedImage} alt="" />
                             </div>
                         )}
                     </div>
+
 
 
 

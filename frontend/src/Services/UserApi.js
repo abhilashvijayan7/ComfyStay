@@ -32,6 +32,11 @@ export const propertySubmit =(values)=>{
     return userInstance.post('/propertysubmit',{...values},{ headers: { "Content-Type": "multipart/form-data" }})
 }
 
+export const propertylist = ()=>{
+    return userInstance.get('/propertylist')
+}
+
+
 
 
 

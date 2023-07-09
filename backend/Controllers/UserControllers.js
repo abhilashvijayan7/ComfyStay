@@ -161,60 +161,75 @@ module.exports.newpassword = async (req, res) => {
 
   }
 };
-module.exports.resentotp=(req,res)=>{
+module.exports.resentotp = (req, res) => {
   const { phonenumber } = forgotUser;
   client.verify.v2.services(serviceID)
-  .verifications.create({ to: `+91${phonenumber}`, channel: 'sms' });
-res.json({ status:true ,message:'Otp resent success' });
+    .verifications.create({ to: `+91${phonenumber}`, channel: 'sms' });
+  res.json({ status: true, message: 'Otp resent success' });
 };
 
-module.exports.resentotpsignup=(req,res)=>{
-console.log(newUser);
+module.exports.resentotpsignup = (req, res) => {
+  console.log(newUser);
   client.verify.v2.services(serviceID)
-  .verifications.create({ to: `+91${newUser.phonenumber}`, channel: 'sms' });
-res.json({ status:true ,message:'Otp resent success' });
+    .verifications.create({ to: `+91${newUser.phonenumber}`, channel: 'sms' });
+  res.json({ status: true, message: 'Otp resent success' });
 };
 
-module.exports.propertysubmit =async(req,res)=>{
-  console.log('print req.body',req.body);
-try{
-  const exist = await userPropertyModel.findOne({propertynumber:req.body.propertynumber}).lean();
- 
-  if(exist){
-    console.log('existtttttttttttt');
-    res.json({status:false,message:'The property already exist'});
-  }else{
-  console.log('not existtttt');
-  const imagePath = req.files.image[0].path;
-  // eslint-disable-next-line quotes
-  const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
-await new userPropertyModel ({
+module.exports.propertysubmit = async (req, res) => {
+  console.log('print req.body', req.body);
+  try {
+    const exist = await userPropertyModel.findOne({ propertynumber: req.body.propertynumber }).lean();
 
-userId: req.user._id,
-hometype:  req.body.hometype,
-propertynumber:  req.body.propertynumber,
-address:  req.body.address,
-guests:  req.body.guests,
-bedrooms:  req.body.bedrooms,
-beds:  req.body.beds,
-bathrooms:  req.body.bathrooms,
-wifi:  req.body.wifi,
-tv:  req.body.tv,
-kitchen:  req.body.kitchen,
-washingmachine:  req.body.washingmachine,
-freeparking:  req.body.freeparking,
-paidparking:  req.body.paidparking,
-airconditioning:  req.body.airconditioning,
-dedicatedworkspace:  req.body.dedicatedworkspace,
-homephoto:  modifiedImagePath,
-homeprice:  req.body.homeprice
+    if (exist) {
+      console.log('existtttttttttttt');
+      res.json({ status: false, message: 'The property already exist' });
+    } else {
+      console.log('not existtttt');
+      const imagePath = req.files.image[0].path;
+      // eslint-disable-next-line quotes
+      const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
+      await new userPropertyModel({
 
-}).save();
-res.json({ status: true, message: 'Property added successfuly' });
+        userId: req.user._id,
+        hometype: req.body.hometype,
+        propertynumber: req.body.propertynumber,
+        address: req.body.address,
+        guests: req.body.guests,
+        bedrooms: req.body.bedrooms,
+        beds: req.body.beds,
+        bathrooms: req.body.bathrooms,
+        wifi: req.body.wifi,
+        tv: req.body.tv,
+        kitchen: req.body.kitchen,
+        washingmachine: req.body.washingmachine,
+        freeparking: req.body.freeparking,
+        paidparking: req.body.paidparking,
+        airconditioning: req.body.airconditioning,
+        dedicatedworkspace: req.body.dedicatedworkspace,
+        homephoto: modifiedImagePath,
+        homeprice: req.body.homeprice
 
+      }).save();
+      res.json({ status: true, message: 'Property added successfuly' });
+
+    }
+  } catch (error) {
+    res.json({ status: false, message: error.message });
   }
-}catch (error) {
-  res.json({ status: false, message: error.message });
-}
 
+};
+
+module.exports.propertylist = async (req, res) => {
+  try {
+
+    const list = await userPropertyModel.find({});
+    if (!list || list.length === 0) {
+      res.json({ status: false, message: 'No property found' });
+    } else{
+      res.json({ status: true, homelist: list });
+
+    }
+  } catch (error) {
+    res.json({ status: false, message: error.message });
+  }
 };
