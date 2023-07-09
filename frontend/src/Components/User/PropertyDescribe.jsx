@@ -1,11 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
+import { useEffect, useState } from "react";
+
 import { useFormik } from 'formik'
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { propertySubmit } from '../../Services/UserApi';
 import * as Yup from 'yup'
 
 const initialValues = {
+  
     hometype: 'home',
     propertynumber: '',
     address: '',
@@ -25,17 +28,17 @@ const initialValues = {
     homeprice: '',
 
 }
-const onSubmit = async(values) => {
-    try{
+const onSubmit = async (values) => {
+    try {
 
-const {data} =  await propertySubmit(values)
+        const { data } = await propertySubmit(values)
 
-    }catch(error){
+    } catch (error) {
         toast.error(error.message, {
             position: 'top-center'
-          })
+        })
     }
-    
+
 }
 
 // const validate =(values)=>{
@@ -68,14 +71,16 @@ const validationSchema = Yup.object().shape({
     homeprice: Yup.number()
         .typeError('Please enter a valid number')
         .required('This field is required'),
-    propertynumber:Yup.number()
-    .typeError('Please enter a valid number')
-    .required('This field is required')    
+    propertynumber: Yup.number()
+        .typeError('Please enter a valid number')
+        .required('This field is required')
 
 })
 
 
 function PropertyDescribe() {
+    const [selectedImage, setSelectedImage] = useState(null);
+
 
     const formik = useFormik({
         initialValues,
@@ -84,13 +89,18 @@ function PropertyDescribe() {
         //    validate
 
     })
-    console.log('form error', formik.errors);
+
+    const handleImageChange = (event) => {
+        const file = event.currentTarget.files[0];
+        formik.setFieldValue("image", file);
+        setSelectedImage(URL.createObjectURL(file));
+    };
 
     return (
         <>
             <header className="py-7 bg-gray-800">
                 <div className="flex items-center justify-center sm:justify-start">
-                    <p className="text-white pl-4 sm:pl-12 text-2xl sm:text-3xl font-serif">
+                    <p className="text-white px-4 sm:px-12 text-2xl sm:text-3xl font-serif">
                         ComfyStay
                     </p>
                 </div>
@@ -134,19 +144,19 @@ function PropertyDescribe() {
                             >
                                 Property number
                             </label>
-                            
+
 
                             <input
-                                    type="text"
-                                    id="propertynumber"
-                                    name="propertynumber"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
+                                type="text"
+                                id="propertynumber"
+                                name="propertynumber"
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
 
-                                    value={formik.values.propertynumber}
-                                    className="form-select block w-full sm:w-96 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-                                    />
-                                {formik.touched.propertynumber && formik.errors.propertynumber ? <div className="text-red-500 text-sm"> {formik.errors.propertynumber}</div> : null}
+                                value={formik.values.propertynumber}
+                                className="form-select block w-full sm:w-96 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            />
+                            {formik.touched.propertynumber && formik.errors.propertynumber ? <div className="text-red-500 text-sm"> {formik.errors.propertynumber}</div> : null}
 
 
 
@@ -186,14 +196,12 @@ function PropertyDescribe() {
 
 
 
-                    <div className=" flex flex-col sm:flex-row ml-5 sm: justify-center mt-10 mb-10">
-                        <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                            htmlFor=" "
-                        >
-                            Which of these best describes your place?
+                    <div className="flex flex-col items-center sm:flex-row sm:justify-center mt-10 mb-10">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="">
+                            Share some basics about your place
                         </label>
                     </div>
+
 
 
 
@@ -311,12 +319,9 @@ function PropertyDescribe() {
 
 
 
-                        <div className=" flex flex-col sm:flex-row ml-5 sm: justify-center mt-14 mb-14">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor=" "
-                            >
-                                what your place has to offer
+                        <div className="flex flex-col items-center sm:flex-row sm:justify-center mt-14 mb-14">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="">
+                                What does your place have to offer?
                             </label>
                         </div>
 
@@ -498,14 +503,21 @@ function PropertyDescribe() {
                     </div>
 
 
-                    <div className=" flex flex-col sm:flex-row ml-5 sm: justify-center mt-5 mb-5">
-                        <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                            htmlFor="homephoto"
-                        >
+                    <div className="flex flex-col items-center sm:flex-row sm:justify-center mt-5 mb-5">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="homephoto">
                             Add photo of your house
                         </label>
                     </div>
+
+
+                    <div className="flex justify-center items-center">
+                        {selectedImage && (
+                            <div className="w-32 sm:w-48 h-32 sm:h-48 bg-red-500 mb-3">
+                                <img className="w-full h-full object-cover" src={selectedImage} alt="" />
+                            </div>
+                        )}
+                    </div>
+
 
 
 
@@ -523,12 +535,21 @@ function PropertyDescribe() {
                                 id="homephoto"
                                 name="homephoto"
                                 type="file"
-                                onChange={formik.handleChange}
+                                onChange={(event) => {
+                                    formik.handleChange(event);
+                                    handleImageChange(event); // Call the handleImageChange function to update the selectedImage state
+                                }}
                                 onBlur={formik.handleBlur}
-
-                                value={formik.values.homephoto}
                             />
-                            {formik.touched.homephoto && formik.errors.homephoto ? <div className="text-red-500 text-sm"> {formik.errors.homephoto}</div> : null}
+
+                            {formik.touched.homephoto && formik.errors.homephoto ? (
+                                <div className="text-red-500 text-sm">{formik.errors.homephoto}</div>
+                            ) : null}
+
+                            {/* Display the selected file name */}
+                            {formik.values.homephoto && (
+                                <div>{formik.values.homephoto.name}</div>
+                            )}
                         </>
 
                     </div>
@@ -574,7 +595,7 @@ function PropertyDescribe() {
                     <div className="mt-8 flex justify-center">
                         <button
                             type="submit"
-                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-4 py-2.5 text-center sm:text-sm dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             Submit
                         </button>
@@ -583,7 +604,7 @@ function PropertyDescribe() {
 
 
                 </form>
-                
+
             </div>
 
         </>

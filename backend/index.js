@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 require('dotenv').config();
+const path = require('path');
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -29,6 +31,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
 //Middleware to parse form data
 
 app.use('/',userRoutes);

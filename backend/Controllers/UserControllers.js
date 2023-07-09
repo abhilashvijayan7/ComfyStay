@@ -185,6 +185,9 @@ try{
     res.json({status:false,message:'The property already exist'});
   }else{
   console.log('not existtttt');
+  const imagePath = req.files.image[0].path;
+  // eslint-disable-next-line quotes
+  const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
 await new userPropertyModel ({
 
 userId: req.user._id,
@@ -203,7 +206,7 @@ freeparking:  req.body.freeparking,
 paidparking:  req.body.paidparking,
 airconditioning:  req.body.airconditioning,
 dedicatedworkspace:  req.body.dedicatedworkspace,
-homephoto:  req.body.homephoto,
+homephoto:  modifiedImagePath,
 homeprice:  req.body.homeprice
 
 }).save();

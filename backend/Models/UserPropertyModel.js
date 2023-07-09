@@ -7,6 +7,11 @@ const addPropertySchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    status:{
+        type:String,
+        required:true,
+        default:'pending'
+    },
     hometype: {
         type: String,
         required: true

@@ -29,7 +29,7 @@ export const resentOtpSignup = ()=>{
 }
 
 export const propertySubmit =(values)=>{
-    return userInstance.post('/propertysubmit',{...values})
+    return userInstance.post('/propertysubmit',{...values},{ headers: { "Content-Type": "multipart/form-data" }})
 }
 
 
