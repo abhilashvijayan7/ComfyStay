@@ -221,8 +221,10 @@ module.exports.propertysubmit = async (req, res) => {
 
 module.exports.propertylist = async (req, res) => {
   try {
+    const  userId= req.user._id;
+    console.log(userId,'useriddddddddddddddd');
 
-    const list = await userPropertyModel.find({});
+    const list = await userPropertyModel.find({userId:userId});
     if (!list || list.length === 0) {
       res.json({ status: false, message: 'No property found' });
     } else{

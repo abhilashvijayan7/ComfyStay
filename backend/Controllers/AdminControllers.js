@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const userPropertyModel = require('../Models/UserPropertyModel');
 
 const admin = require('../Models/AdminModel');
 const bcrypt = require('bcrypt');
@@ -24,10 +25,38 @@ module.exports.adminLogin = async (req, res) => {
                 res.json({ message: 'Incorrect Password', status: false });
             }
         } else {
-            res.json({ message: 'Admin not Found.Please check your email' });
+            res.json({ message: 'Admin not Found.Please check your email', status: false });
         }
     } catch (error) {
         console.log(error);
         res.json({ status: false, message: error.message });
+    }
+};
+
+module.exports.propertylist = async (req, res) => {
+    try {
+  
+        const list = await userPropertyModel.find({});
+        if (!list || list.length === 0) {
+            res.json({ status: false, message: 'No property found' });
+        } else{
+            res.json({ status: true, homelist: list });
+  
+        }
+    } catch (error) {
+        res.json({ status: false, message: error.message });
+    }
+};
+module.exports.updatePropertyStatus = async (req, res) => {
+    try {
+        const propertyId = req.params.id;
+        const { status } = req.body;
+
+        // Update the property status in the database
+        await userPropertyModel.findByIdAndUpdate(propertyId, { status });
+
+        res.json({ status: true, message: 'Property status updated successfully.' });
+    } catch (error) {
+        res.status(500).json({ status: false, message: 'Failed to update property status.' });
     }
 };

@@ -3,7 +3,7 @@ import AdminSidebar from "../../Components/Admin/AdminSidebar"
 
 function AdminHomePage() {
   return (
-   <section className="flex gap-6">
+   <section className="flex">
    <AdminSidebar/>
    <AdminDashboard/>
    </section>

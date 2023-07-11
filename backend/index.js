@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost:27017/ComfyStay',{
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
-    methods:['GET','POST'],
+    methods:['GET','POST','PUT'],
     credentials:true
 }));
 

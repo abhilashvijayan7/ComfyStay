@@ -1,7 +1,7 @@
-/* eslint-disable no-unused-vars */
+
 /* eslint-disable react/no-unknown-property */
 import './Style.css'
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import {toast} from 'react-toastify'
 import { useState } from 'react'
 import{adminLogin} from '../../Services/AdminApi'
@@ -29,7 +29,7 @@ function AdminLogin() {
             
             const {data} = await adminLogin(inputs)
             if(data.status){
-                 localStorage.setItem("jwt", data.token)
+                 localStorage.setItem("adminjwt", data.token)
                 toast(data.message)
                 navigate('/admin/')
             }else{
