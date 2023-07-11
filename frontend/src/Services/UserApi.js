@@ -36,6 +36,11 @@ export const propertylist = ()=>{
     return userInstance.get('/propertylist')
 }
 
+export const homePropertylist = ()=>{
+    return userInstance.get('/homepropertylist')
+}
+
+
 
 
 

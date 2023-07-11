@@ -16,14 +16,44 @@ const addPropertySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    propertynumber: {
+
+    propertynumber:{
         type: String,
         required: true
     },
+
     address: {
-        type: String,
-        required: true
+        houseName:{
+            type: String,
+            required: true
+        },
+        city:{
+            type: String,
+            required: true
+        },
+
+        district:{
+            type: String,
+            required: true
+        },
+
+        state:{
+            type: String,
+            required: true
+        }, 
+
+        pincode:{
+            type: String,
+            required: true
+        },
+        phoneNumber:{
+            type: String,
+            required: true
+        }
+        
+       
     },
+    
     guests: {
         type: String,
         required: true
@@ -84,5 +114,6 @@ const addPropertySchema = new mongoose.Schema({
 });
 
 module.exports  = mongoose.model('AddProperty', addPropertySchema);
+
 
 

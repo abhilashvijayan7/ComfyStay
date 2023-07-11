@@ -9,15 +9,15 @@ import {
 function LandingPageCategories() {
     return (
         <div className="container">
-            <div className="my-2 flex gap-3">
+            <div className="px-16 my-2 flex gap-3 pt-3 " >
                 <div className="flex flex-col items-center hover:cursor-pointer">
-                    <HumbleiconsHome className="text-2xl" /><span>Home</span>
+                    <HumbleiconsHome className="text-lg" /><span>Home</span>
                 </div>
                 <div className="flex flex-col items-center hover:cursor-pointer">
-                    <FluentBuildingHome16Regular className="text-2xl" /><span>Flat/Apartment</span>
+                    <FluentBuildingHome16Regular className="text-lg" /><span>Flat/Apartment</span>
                 </div>
                 <div className="flex flex-col items-center hover:cursor-pointer">
-                    <HeroiconsOutlineBuildingStorefront className="text-2xl" /><span>Hotel</span>
+                    <HeroiconsOutlineBuildingStorefront className="text-lg" /><span>Hotel</span>
                 </div>
             </div>
         </div>

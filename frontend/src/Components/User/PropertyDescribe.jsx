@@ -1,3 +1,9 @@
+
+
+
+
+
+
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
@@ -13,10 +19,13 @@ import * as Yup from 'yup'
 
 function PropertyDescribe() {
     const initialValues = {
-
         hometype: 'home',
         propertynumber: '',
-        address: '',
+        houseName: '',
+        city: '',
+        district: '',
+        state: '',
+        pincode: '',
         guests: '1',
         bedrooms: '1',
         beds: '1',
@@ -31,8 +40,10 @@ function PropertyDescribe() {
         dedicatedworkspace: false,
         homephoto: '',
         homeprice: '',
-
-    }
+        phoneNumber: ''
+      };
+      
+      
     const onSubmit = async (values) => {
         try {
 
@@ -80,17 +91,48 @@ function PropertyDescribe() {
     //     return errors
     // }
 
-    const validationSchema = Yup.object().shape({
-        address: Yup.string().required('This field is required'),
-        homephoto: Yup.string().required('This field is required'),
-        homeprice: Yup.number()
-            .typeError('Please enter a valid number')
-            .required('This field is required'),
-        propertynumber: Yup.number()
-            .typeError('Please enter a valid number')
-            .required('This field is required')
+//     const validationSchema = Yup.object().shape({
+//   address: Yup.object().shape({
+//     houseName: Yup.string().required('House Name is required'),
+//     city: Yup.string().required('City is required'),
+//     district: Yup.string().required('District is required'),
+//     state: Yup.string().required('State is required'),
+//     pincode: Yup.string().required('Pincode is required')
+//   }),
+//   homephoto: Yup.string().required('This field is required'),
+//   homeprice: Yup.number()
+//     .typeError('Please enter a valid number')
+//     .required('This field is required'),
+//   propertynumber: Yup.number()
+//     .typeError('Please enter a valid number')
+//     .required('This field is required')
+// });
 
-    })
+    
+
+
+const validationSchema = Yup.object().shape({
+    houseName: Yup.string().required('House Name is required'),
+    city: Yup.string().required('City is required'),
+    district: Yup.string().required('District is required'),
+    state: Yup.string().required('State is required'),
+    pincode: Yup.string().required('Pincode is required'),  
+    homephoto: Yup.string().required('This field is required'),
+    homeprice: Yup.number()
+        .typeError('Please enter a valid number')
+        .required('This field is required'),
+    propertynumber: Yup.number()
+        .typeError('Please enter a valid number')
+        .required('This field is required'),
+
+        phoneNumber: Yup.number()
+        .typeError('Please enter a valid number')
+        .required('This field is required')    
+
+})
+
+
+
 
 
 
@@ -187,28 +229,138 @@ function PropertyDescribe() {
 
 
                     <div>
-                        <>
-                            <label
-                                htmlFor="address"
-                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                                Where's your place located?
-                            </label>
-                            <textarea
-                                id="address"
-                                name="address"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.address}
-                                rows={4}
-                                className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Where's your place located?"
+  <label
+    htmlFor="houseName"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    House Name
+  </label>
+  <input
+    type="text"
+    id="houseName"
+    name="houseName"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.houseName}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="House Name"
+  />
+  {formik.touched.houseName && formik.errors.houseName ? (
+    <div className="text-red-500 text-sm">{formik.errors.houseName}</div>
+  ) : null}
+</div>
 
-                            />
-                            {formik.touched.address && formik.errors.address ? <div className="text-red-500 text-sm"> {formik.errors.address}</div> : null}
-                        </>
+<div>
+  <label
+    htmlFor="city"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    City
+  </label>
+  <input
+    type="text"
+    id="city"
+    name="city"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.city}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="City"
+  />
+  {formik.touched.city && formik.errors.city ? (
+    <div className="text-red-500 text-sm">{formik.errors.city}</div>
+  ) : null}
+</div>
 
-                    </div>
+<div>
+  <label
+    htmlFor="district"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    District
+  </label>
+  <input
+    type="text"
+    id="district"
+    name="district"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.district}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="District"
+  />
+  {formik.touched.district && formik.errors.district ? (
+    <div className="text-red-500 text-sm">{formik.errors.district}</div>
+  ) : null}
+</div>
+
+<div>
+  <label
+    htmlFor="state"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    State
+  </label>
+  <input
+    type="text"
+    id="state"
+    name="state"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.state}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="State"
+  />
+  {formik.touched.state && formik.errors.state ? (
+    <div className="text-red-500 text-sm">{formik.errors.state}</div>
+  ) : null}
+</div>
+
+<div>
+  <label
+    htmlFor="pincode"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    Pincode
+  </label>
+  <input
+    type="text"
+    id="pincode"
+    name="pincode"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.pincode}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="Pincode"
+  />
+  {formik.touched.pincode && formik.errors.pincode ? (
+    <div className="text-red-500 text-sm">{formik.errors.pincode}</div>
+  ) : null}
+</div>
+
+<div>
+  <label
+    htmlFor="phoneNumber"
+    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+  >
+    Phone Number
+  </label>
+  <input
+    type="text"
+    id="phoneNumber"
+    name="phoneNumber"
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    value={formik.values.phoneNumber}
+    className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:text-gray-900 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    placeholder="Phone Number"
+  />
+  {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+    <div className="text-red-500 text-sm">{formik.errors.phoneNumber}</div>
+  ) : null}
+</div>
+
+
 
 
 
@@ -629,3 +781,4 @@ function PropertyDescribe() {
 }
 
 export default PropertyDescribe
+

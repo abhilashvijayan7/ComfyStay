@@ -188,12 +188,43 @@ module.exports.propertysubmit = async (req, res) => {
       const imagePath = req.files.image[0].path;
       // eslint-disable-next-line quotes
       const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
-      await new userPropertyModel({
+      // await new userPropertyModel({
 
+      //   userId: req.user._id,
+      //   hometype: req.body.hometype,
+      //   propertynumber: req.body.propertynumber,
+      //   address: req.body.address,
+      //   guests: req.body.guests,
+      //   bedrooms: req.body.bedrooms,
+      //   beds: req.body.beds,
+      //   bathrooms: req.body.bathrooms,
+      //   wifi: req.body.wifi,
+      //   tv: req.body.tv,
+      //   kitchen: req.body.kitchen,
+      //   washingmachine: req.body.washingmachine,
+      //   freeparking: req.body.freeparking,
+      //   paidparking: req.body.paidparking,
+      //   airconditioning: req.body.airconditioning,
+      //   dedicatedworkspace: req.body.dedicatedworkspace,
+      //   homephoto: modifiedImagePath,
+      //   homeprice: req.body.homeprice
+
+      // }).save();
+
+
+
+      await new userPropertyModel({
         userId: req.user._id,
         hometype: req.body.hometype,
         propertynumber: req.body.propertynumber,
-        address: req.body.address,
+        address: {
+          houseName: req.body.houseName,
+          city: req.body.city,
+          district: req.body.district,
+          state: req.body.state,
+          pincode: req.body.pincode,
+          phoneNumber: req.body.phoneNumber
+        },
         guests: req.body.guests,
         bedrooms: req.body.bedrooms,
         beds: req.body.beds,
@@ -207,9 +238,12 @@ module.exports.propertysubmit = async (req, res) => {
         airconditioning: req.body.airconditioning,
         dedicatedworkspace: req.body.dedicatedworkspace,
         homephoto: modifiedImagePath,
-        homeprice: req.body.homeprice
-
+        homeprice: req.body.homeprice,
       }).save();
+      
+
+
+
       res.json({ status: true, message: 'Property added successfuly' });
 
     }
@@ -235,3 +269,22 @@ module.exports.propertylist = async (req, res) => {
     res.json({ status: false, message: error.message });
   }
 };
+
+module.exports.homePropertylist = async (req, res) => {
+  try {
+   
+
+    // eslint-disable-next-line quotes
+    const list = await userPropertyModel.find({status :"approved"});
+    if (!list || list.length === 0) {
+      res.json({ status: false, message: 'No property found' });
+    } else{
+      res.json({ status: true,approvedlist: list });
+
+    }
+  } catch (error) {
+    res.json({ status: false, message: error.message });
+  }
+};
+
+

@@ -104,7 +104,7 @@ function PropertyList() {
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.bedrooms}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.beds}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.bathrooms}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.address}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{item.address.houseName},{item.address.city},{item.address.district},{item.address.state}-{item.address.pincode}, phone:{item.address.phoneNumber}</td>
                                         <td className="px-6 py-4 text-right">
                                             <a
                                                 href="#"
@@ -122,5 +122,7 @@ function PropertyList() {
         </>
     );
 }
+
+
 
 export default PropertyList;
