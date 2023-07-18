@@ -40,7 +40,9 @@ export const homePropertylist = ()=>{
     return userInstance.get('/homepropertylist')
 }
 
-
+export const viewProperty =(id)=>{
+    return userInstance.get(`/viewproperty/${id}`)
+}
 
 
 

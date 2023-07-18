@@ -85,10 +85,11 @@ import { toast } from 'react-toastify';
 import { homePropertylist } from '../../Services/UserApi';
 import { useNavigate } from 'react-router-dom';
 
+
 const LandingPageBody = ({ selectedCategory }) => {
   const navigate = useNavigate();
-  const gotoPropertyPage = () => {
-    navigate('/propertyPage');
+  const propertyDetail = (propertyId) => {
+    navigate(`/propertydetail/${propertyId}`);
   };
 
   const [homeProperty, setHomeProperty] = useState(null);
@@ -133,8 +134,8 @@ const LandingPageBody = ({ selectedCategory }) => {
           {filteredProperties &&
             filteredProperties.map((item) => (
               <div
-                key={item.id}
-                onClick={gotoPropertyPage}
+                key={item._id}
+                onClick={()=>propertyDetail(item._id)}
                 className="flex justify-center hover:shadow-2xl hover:cursor-pointer"
               >
                 <div className="rounded-lg shadow-lg bg-white border border-gray-300 hover:border-gray-500">
@@ -146,12 +147,12 @@ const LandingPageBody = ({ selectedCategory }) => {
                     />
                   </div>
                   <div className="p-6 text-center">
-                    <h5 className="text-gray-900 text-xl font-medium mb-2">{item.address.city},{item.address.state}</h5>
-                    <p className="text-gray-700 text-sm font-medium  mb-3">{item.hometype && item.hometype.charAt(0).toUpperCase() + item.hometype.slice(1)}</p>
+                    <h5 className="text-gray-900 text-xl font-medium mb-2">{item.address.city},{item.address.district},{item.address.state}</h5>
+                    <p className="text-gray-400 text-lg font-medium  mb-3">{item.hometype && item.hometype.charAt(0).toUpperCase() + item.hometype.slice(1)}</p>
 
 
                     
-                    <p className="text-gray-500 text-sm mb-3">Pin-{item.address.pincode}</p>
+                    <p className="text-gray-500 text-sm mb-3">PIN-{item.address.pincode}</p>
                     <p>
                       <span className="font-semibold "></span> ₹{item.homeprice}
                     </p>

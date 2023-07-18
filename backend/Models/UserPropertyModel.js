@@ -109,6 +109,11 @@ const addPropertySchema = new mongoose.Schema({
     homeprice: {
         type: String,
         required: true
+    },
+    bookedstatus:{
+        type:String,
+        required:true,
+        default:'false'
     }
      
 });

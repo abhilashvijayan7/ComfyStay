@@ -239,6 +239,7 @@ module.exports.propertysubmit = async (req, res) => {
         dedicatedworkspace: req.body.dedicatedworkspace,
         homephoto: modifiedImagePath,
         homeprice: req.body.homeprice,
+      
       }).save();
       
 
@@ -284,6 +285,21 @@ module.exports.homePropertylist = async (req, res) => {
     }
   } catch (error) {
     res.json({ status: false, message: error.message });
+  }
+};
+
+module.exports.viewProperty = async(req,res)=>{
+  try {
+    const propertyId = req.params.id;
+    const property = await userPropertyModel.findOne({ _id: propertyId });
+    if (property) {
+      res.json({ status: true, property });
+    } else {
+      res.json({ status: false, message: 'Something went wrong' });
+    }
+  } catch (error) {
+    res.json({ status: false, message: error.message });
+    console.log(error);
   }
 };
 

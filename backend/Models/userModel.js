@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        require :true
+        required :true
     },
     verified:{
         type:Boolean,
@@ -29,4 +29,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('user',userSchema);
+module.exports = mongoose.model('User',userSchema);

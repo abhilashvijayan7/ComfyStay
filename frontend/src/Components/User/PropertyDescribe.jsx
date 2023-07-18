@@ -156,9 +156,9 @@ const validationSchema = Yup.object().shape({
 
     return (
         <>
-            <header className="py-7 bg-gray-800">
+            <header className="py-6 bg-gray-800">
                 <div className="flex items-center justify-center sm:justify-start">
-                    <p className="text-white px-4 sm:px-12 text-2xl sm:text-3xl font-serif">
+                    <p className="text-white px-4 sm:px-12 text-2xl sm:text-2xl font-serif">
                         AddProperty
                     </p>
                 </div>

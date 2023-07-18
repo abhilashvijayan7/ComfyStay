@@ -80,7 +80,7 @@ function AdminPropertylist() {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full">
             <div className="py-4 w-full bg-[#0e0e0e]">
                 <header>
                     <div className="flex items-center justify-center sm:justify-start">
@@ -90,7 +90,7 @@ function AdminPropertylist() {
                     </div>
                 </header>
             </div>
-            <div className="overflow-x-auto shadow-md sm:rounded-lg m-16">
+            <div className="overflow-x-auto shadow-md sm:rounded-lg m-10">
                 <div className="inline-block min-w-full overflow-hidden bg-gray-100">
                     <table className="w-full text-sm text-left">
                         <thead className="text-xs bg-gray-200 text-gray-800 uppercase">
