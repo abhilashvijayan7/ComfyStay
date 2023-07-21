@@ -32,18 +32,28 @@ export const propertySubmit =(values)=>{
     return userInstance.post('/propertysubmit',{...values},{ headers: { "Content-Type": "multipart/form-data" }})
 }
 
-export const propertylist = ()=>{
-    return userInstance.get('/propertylist')
-}
 
-export const homePropertylist = ()=>{
-    return userInstance.get('/homepropertylist')
+
+export const homePropertylist = (page, limit)=>{
+    return userInstance.get('/homepropertylist',{
+        params: {
+            limit,
+            page
+        }
+    })
 }
 
 export const viewProperty =(id)=>{
     return userInstance.get(`/viewproperty/${id}`)
 }
 
-
+export const propertylist = (page, limit)=>{
+    return userInstance.get('/propertylist', {
+        params: {
+            limit,
+            page
+        }
+    })
+}
 
 

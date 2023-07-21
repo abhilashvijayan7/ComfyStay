@@ -239,9 +239,9 @@ module.exports.propertysubmit = async (req, res) => {
         dedicatedworkspace: req.body.dedicatedworkspace,
         homephoto: modifiedImagePath,
         homeprice: req.body.homeprice,
-      
+
       }).save();
-      
+
 
 
 
@@ -256,14 +256,19 @@ module.exports.propertysubmit = async (req, res) => {
 
 module.exports.propertylist = async (req, res) => {
   try {
-    const  userId= req.user._id;
-    console.log(userId,'useriddddddddddddddd');
+    const userId = req.user._id;
 
-    const list = await userPropertyModel.find({userId:userId});
+    const skip = (req.query.page - 1) * req.query.limit;
+    const limit = parseInt(req.query.limit);
+    const totalCount = await userPropertyModel.find({ userId: userId }).countDocuments({});
+    const totalPages = Math.ceil(totalCount / limit);
+    const list = await userPropertyModel.find({ userId: userId }).skip(skip).limit(limit);
+
+
     if (!list || list.length === 0) {
       res.json({ status: false, message: 'No property found' });
-    } else{
-      res.json({ status: true, homelist: list });
+    } else {
+      res.json({ status: true, homelist: list, totalCount, totalPages });
 
     }
   } catch (error) {
@@ -273,14 +278,19 @@ module.exports.propertylist = async (req, res) => {
 
 module.exports.homePropertylist = async (req, res) => {
   try {
-   
+
 
     // eslint-disable-next-line quotes
-    const list = await userPropertyModel.find({status :"approved"});
+    const skip = (req.query.page - 1) * req.query.limit;
+    const limit = parseInt(req.query.limit);
+    const totalCount = await userPropertyModel.find({ status: 'approved' }).countDocuments({});
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const list = await userPropertyModel.find({ status: 'approved' }).skip(skip).limit(limit);
     if (!list || list.length === 0) {
       res.json({ status: false, message: 'No property found' });
-    } else{
-      res.json({ status: true,approvedlist: list });
+    } else {
+      res.json({ status: true, approvedlist: list, totalCount, totalPages });
 
     }
   } catch (error) {
@@ -288,7 +298,7 @@ module.exports.homePropertylist = async (req, res) => {
   }
 };
 
-module.exports.viewProperty = async(req,res)=>{
+module.exports.viewProperty = async (req, res) => {
   try {
     const propertyId = req.params.id;
     const property = await userPropertyModel.findOne({ _id: propertyId });

@@ -31,7 +31,7 @@ function PropertyDetail() {
     <div>
       {property ? <div>
         {property && <div className='mt-8'>
-          <div className='p-2 bg-[#f4f4f4] flex justify-center'><p className='text-black font-bold text-lg uppercase'> {property?.hometype}</p></div>
+          <div className='p-2 bg-[#f4f4f4] flex justify-center'><p className='text-[#367470] font-bold text-lg uppercase'> {property?.hometype}</p></div>
         </div>}
         <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center md:p-5 border rounded-md border-[#c0c0c0] md:m-5 '>
           {property && <div className='flex flex-col gap-6 lg:w-2/4'>
@@ -50,29 +50,31 @@ function PropertyDetail() {
           }
           {property && <div className='flex flex-col justify-center items-center gap-4 lg:w-2/4 px-2 py-8 bg-[#f4f4f4]' >
             <div>
-              <h1 className='text-3xl font-bold'>{property?.address?.houseName}</h1>
+              <h1 className='text-3xl font-bold text-[#367470]'>{property?.address?.houseName}</h1>
             </div>
             <div className='flex justify-center items-center'>
               <div className='leading-8 w-[24vw]'>
 
-                <p className='text-gray-700'>
+                <p className='text-gray-600 text-base  font-semibold'>
                   Property Number : {property.propertynumber}
                 </p>
 
-                <p className='text-gray-700'>
-                  Number of guests : {property?.guests}
+                <p className='text-gray-600 text-base  font-semibold'>
+                  Guests : {property?.guests}
                 </p>
 
-                <p className='text-gray-700'>
-                  Number of bedrooms : {property?.bedrooms}
+                <p className='text-gray-600 text-base  font-semibold'>
+                  Bedrooms : {property?.bedrooms}
                 </p>
-                <p className='text-gray-700'>
-                  Number of beds : {property?.beds}
+                <p className='text-gray-600 text-base  font-semibold'>
+                  Beds : {property?.beds}
                 </p>
-                <p className='text-gray-700'>
-                  Number of bathrooms : {property?.bathrooms}
+                <p className='text-gray-600 text-base  font-semibold'>
+                  Bathrooms : {property?.bathrooms}
                 </p>
-                <p className='text-gray-500 font-semibold'>
+
+
+                <p className='text-gray-500 font-semibold mt-3'>
                   What this place offers
                 </p>
 
@@ -135,17 +137,17 @@ function PropertyDetail() {
 
 
 
-                <p className='text-gray-700  break-words'>
+                <p className='text-gray-600  break-words text-base  font-semibold mt-3'>
                   Address: {property?.address?.houseName}, {property?.address?.city}, {property?.address?.district} {property?.address?.pincode}, {property?.address?.state}
                 </p>
 
-                <p className='text-gray-700'>
+                <p className='text-gray-600 text-base  font-semibold mt-3'>
                   Phone : {property?.address?.phoneNumber}
                 </p>
-                 
+
               </div>
             </div>
-            <p className='text-lg font-medium text-gray-900'>
+            <p className='text-lg font-semibold text-red-500'>
               ₹ {property?.homeprice}
             </p>
             {!property.bookedstatus ? <div className='flex flex-row items-center '>
