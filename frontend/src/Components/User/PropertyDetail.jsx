@@ -31,12 +31,12 @@ function PropertyDetail() {
     <div>
       {property ? <div>
         {property && <div className='mt-8'>
-          <div className='p-2 bg-[#358E88] flex justify-center'><p className='text-white font-bold text-lg uppercase'> {property?.hometype}</p></div>
+          <div className='p-2 bg-[#f4f4f4] flex justify-center'><p className='text-black font-bold text-lg uppercase'> {property?.hometype}</p></div>
         </div>}
         <div className='flex flex-col justify-between lg:flex-row gap-16 lg:items-center md:p-5 border rounded-md border-[#c0c0c0] md:m-5 '>
           {property && <div className='flex flex-col gap-6 lg:w-2/4'>
             <div className='flex justify-center'>
-              <div className="w-auto bg-red-500 text-white py-1 px-2 rounded-full text-xs font-bold ">
+              <div className="w-auto bg-black text-white py-1 px-2 rounded-full text-xs font-bold ">
                 {`Located in ${property?.address?.district}`}
               </div>
             </div>
@@ -151,7 +151,7 @@ function PropertyDetail() {
             {!property.bookedstatus ? <div className='flex flex-row items-center '>
               <button className='bg-red-300 text-red-700 font-bold py-3 px-[7rem] h-full'>THIS PROPERTY IS CURRENTLY NOT AVAILABLE.TRY AGAIN LATER</button>
             </div> : <div className='flex flex-row items-center gap-12 '>
-              <button onClick={() => navigate(`/bookacar/${property._id}`)} className=' bg-[#358E88] text-white font-semibold py-3 px-[7rem] h-full '>Book Now</button>
+              <button onClick={() => navigate(`/bookacar/${property._id}`)} className=' bg-black text-white font-semibold py-3 px-[7rem] h-full '>Book Now</button>
             </div>
             }
           </div>

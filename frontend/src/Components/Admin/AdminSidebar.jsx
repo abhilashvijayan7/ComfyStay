@@ -27,7 +27,7 @@ function AdminSidebar() {
     { name: "Sign Out", icon: AiOutlineLogout, onClick: handleLogout , link: "/admin/login" },
   ];
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const toggleSidebar = () => {
     setOpen(!open);

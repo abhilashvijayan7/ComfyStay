@@ -36,13 +36,29 @@ module.exports.adminLogin = async (req, res) => {
 module.exports.propertylist = async (req, res) => {
     try {
   
-        const list = await userPropertyModel.find({});
+        // const list = await userPropertyModel.find({});
+        // if (!list || list.length === 0) {
+        //     res.json({ status: false, message: 'No property found' });
+        // } else{
+        //     res.json({ status: true, homelist: list });
+  
+        // }
+        const skip = (req.query.page - 1) * req.query.limit;
+        const limit = parseInt(req.query.limit);
+        const totalCount = await userPropertyModel.countDocuments({});
+        const totalPages = Math.ceil(totalCount / limit);
+        const list = await userPropertyModel.find({}).skip(skip).limit(limit);
+       
+
+
         if (!list || list.length === 0) {
             res.json({ status: false, message: 'No property found' });
+
         } else{
-            res.json({ status: true, homelist: list });
-  
+            res.json({ status: true, homelist: list , totalCount, totalPages });
+      
         }
+
     } catch (error) {
         res.json({ status: false, message: error.message });
     }
