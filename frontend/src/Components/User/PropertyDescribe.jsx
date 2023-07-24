@@ -125,10 +125,11 @@ const validationSchema = Yup.object().shape({
         .typeError('Please enter a valid number')
         .required('This field is required'),
 
-        phoneNumber: Yup.number()
-        .typeError('Please enter a valid number')
-        .required('This field is required')    
-
+        phoneNumber: Yup.string()
+        .required("Mobile number is required")
+        .matches(/^[0-9]+$/, "Mobile number can only include numbers")
+        .min(10, "Mobile number must be exactly 10 digits")
+        .max(10, "Mobile number must be exactly 10 digits"),
 })
 
 

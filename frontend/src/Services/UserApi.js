@@ -77,3 +77,6 @@ export const verifyPayment = (response, data, propertyid, totalAmountamount) => 
 export const orderApi = (amount) => {
     return userInstance.post("/orders", { ...amount })
 }
+export const getOrderDetailsAPI = (orderId) => {
+    return userInstance.get(`/getorderdetails/${orderId}`)
+}

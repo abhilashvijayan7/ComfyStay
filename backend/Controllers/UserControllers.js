@@ -319,7 +319,7 @@ module.exports.viewProperty = async (req, res) => {
 };
 
 module.exports.bookAProperty = (req, res) => {
- 
+
   try {
     const fromDate = new Date(req.body.fromDate);
     const toDate = new Date(req.body.toDate);
@@ -337,12 +337,12 @@ module.exports.bookAProperty = (req, res) => {
 
     }
     else {
-     
+
       req.session.bookingDetails = req.body;
       req.session.propertyId = req.params.id;
-      console.log( req.session.bookingDetails ,'kundaaaaaaa');
+      console.log(req.session.bookingDetails, 'kundaaaaaaa');
       console.log(req.body);
-     
+
       return res.json({ status: true });
     }
   } catch (error) {
@@ -351,12 +351,12 @@ module.exports.bookAProperty = (req, res) => {
 };
 
 module.exports.paymentPage = async (req, res, next) => {
- 
- 
+
+
   try {
     const bookingDeatails = req.session.bookingDetails;
-    console.log(req.session.bookingDetails,'booooookkkk');
-  
+    console.log(req.session.bookingDetails, 'booooookkkk');
+
     const fromDate = new Date(bookingDeatails.fromDate);
     const toDate = new Date(bookingDeatails.toDate);
     const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
@@ -365,9 +365,9 @@ module.exports.paymentPage = async (req, res, next) => {
     const property = await userPropertyModel.findOne({ _id: propertyId });
     let totalAmount;
     if (property) {
-     
-        totalAmount = numberOfDays * property.homeprice;
-    
+
+      totalAmount = numberOfDays * property.homeprice;
+
       res.json({ status: true, bookingDeatails, property, totalAmount, numberOfDays });
     } else {
       res.json({ status: false });
@@ -425,7 +425,7 @@ module.exports.verify = async (req, res, next) => {
       .digest('hex');
 
     if (razorpay_signature === expectedSign) {
-      
+
       const newOrder = new bookingModel({
         user_id: req.user._id,
         property_id: req.body.propertyid,
@@ -438,7 +438,7 @@ module.exports.verify = async (req, res, next) => {
 
       const order = await newOrder.save();
       const orderId = order._id;
-      await userPropertyModel.findOneAndUpdate({ _id: req.body.propertyid}, { $set: { bookedstatus: true } });
+      await userPropertyModel.findOneAndUpdate({ _id: req.body.propertyid }, { $set: { bookedstatus: true } });
       req.session.bookingDetails = null;
       req.session.propertyId = null;
       res.json({ status: true, message: 'Payment successfull', orderId });
@@ -452,3 +452,22 @@ module.exports.verify = async (req, res, next) => {
   }
 };
 
+module.exports.getOrderDetails = async (req, res, next) => {
+
+  try {
+    const orderId = req.params.id;
+    const order = await bookingModel
+      .findOne({ _id: orderId })
+      .populate('user_id')
+      .populate({ path: 'property_id', populate: { path: 'userId' } });
+    console.log(order, 'ordeeeeeeeeennnnn');
+    if (order) {
+      res.json({ status: true, order });
+    } else {
+      res.json({ status: false, message: 'Something went wrong' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: 'Internal server Error' });
+  }
+};

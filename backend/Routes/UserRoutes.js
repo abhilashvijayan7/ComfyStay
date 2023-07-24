@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 /* eslint-disable no-undef */
 const router = require('express').Router();
-const {register, forgotpassword, resentotp,resentotpsignup,paymentPage,orders,verify}=require('../Controllers/UserControllers');
+const {register, forgotpassword, resentotp,resentotpsignup,paymentPage,orders,verify,getOrderDetails}=require('../Controllers/UserControllers');
 const {verifyOtp,login,verifyotpforgot,newpassword,propertysubmit,propertylist,homePropertylist,viewProperty,bookAProperty}=require('../Controllers/UserControllers');
 const userAuth =require('../Middlewares/userAuth');
 const {uploadImage} = require('../Middlewares/multer');
@@ -24,6 +24,7 @@ router.post('/bookaproperty/:id',userAuth,bookAProperty);
 router.get('/paymentdetails', userAuth, paymentPage);
 router.post('/verifypayment', userAuth, verify);
 router.post("/orders", userAuth, orders);
+router.get('/getorderdetails/:id', userAuth, getOrderDetails);
 
 
 

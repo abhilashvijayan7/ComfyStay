@@ -105,13 +105,15 @@ function PaymentConfirm() {
             <p className="text-xl font-medium">Order Summary</p>
             <p className="text-gray-400">Check your items.</p>
             {property && <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6">
-                <div className="flex flex-col rounded-lg bg-white sm:flex-row">
+                <div className="flex flex-col items-center rounded-lg bg-white sm:flex-row">
                     <img className="m-2 h-24 w-28 rounded-md border object-cover object-center" src={`${import.meta.env.VITE_SERVER_URL}/${property.homephoto}`} alt="" />
                     <div className="flex w-full flex-col px-4 py-4">
-                        <p className="font-semibold">{property.hometype} {property.address.houseName} </p>
-                        <p className="float-right text-gray-400">{property.address.district}</p>
+                        <p className="font-semibold">{property.hometype} </p>
+                        <p className="font-normal"> {property.address.houseName} </p>
                         <p className="float-right text-gray-400">{property.propertynumber}</p>
-                        <p className="float-right text-gray-400">{property.address.phoneNumber}</p>
+
+                        <p className="float-right text-gray-400">{property.address.district}</p>
+                        <p className="float-right text-gray-400">Phone:{property.address.phoneNumber}</p>
                     </div>
                 </div>
             </div>}
