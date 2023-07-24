@@ -94,6 +94,7 @@ module.exports.updatePropertyStatus = async (req, res) => {
         // Get the user details associated with the property
         const property = await userPropertyModel.findById(propertyId).populate('userId');
         const user = property.userId;
+        console.log('user',user);
 
         // Send an email to the user
         const transporter = nodemailer.createTransport({
@@ -101,13 +102,13 @@ module.exports.updatePropertyStatus = async (req, res) => {
             port: 587, // Replace with the appropriate port number
             secure: false, // Set to true if using a secure connection (TLS/SSL)
             auth: {
-                user: 'abhilashfreez@gmail.com', // Replace with your email address
-                pass: 'iqgeqiqnmtxoriyz', // Replace with your email password
+                user: process.env.NODEMAILER_USER, // Replace with your email address
+                pass: process.env.NODEMAILER_PASS, // Replace with your email password
             },
         });
 
         const mailOptions = {
-            from: 'abhilashfreez@gmail.com', // Replace with the sender's email address
+            from:  process.env.NODEMAILER_USER, // Replace with the sender's email address
             to: user.email, // Use the user's email address
             subject: 'Property Status Update',
             text: `Dear ${user.username},\n\nYour property status has been updated to ${status} by the admin.\n\nRegards,\nThe Admin`,

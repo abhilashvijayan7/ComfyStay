@@ -1,17 +1,25 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
 
 import { toast } from 'react-toastify';
-import { viewProperty } from '../../Services/UserApi'
+import { viewProperty , bookPropertyApi} from '../../Services/UserApi'
+
 
 function PropertyDetail() {
   const { id } = useParams();
   const [property, setProperty] = useState({})
   const navigate = useNavigate()
+  const [currentDate, setCurrentDate] = useState('');
+
+  const [isLoading, setIsLoading] = useState("")
 
   useEffect(() => {
+    setCurrentDate(new Date(Date.now() + 86400000).toISOString().split("T")[0]);
 
     viewProperty(id).then((response) => {
       if (response.data.status) {
@@ -26,6 +34,48 @@ function PropertyDetail() {
     })
 
   }, [id])
+
+  const initialValues = {
+
+    fromDate: "",
+    toDate: "",
+
+
+  }
+
+
+
+  const onSubmit = async (values) => {
+    setIsLoading(true)
+    const updatedValues = { ...values };
+    try {
+      bookPropertyApi(updatedValues,id).then((response) => {
+        if (response.data.status) {
+            navigate(`/paymentconfirm`)
+        } else {
+            toast.error(response.data.message, {
+                position: 'top-center'
+            })
+            setIsLoading(false)
+        }
+    })
+    } catch (error) {
+      setIsLoading(false)
+    }
+  };
+
+  const validationSchema = Yup.object({
+
+    fromDate: Yup.date().required("From Date is required"),
+    toDate: Yup.date().required("To Date is required"),
+
+  })
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema
+  })
 
   return (
     <div>
@@ -150,15 +200,96 @@ function PropertyDetail() {
             <p className='text-lg font-semibold text-red-500'>
               ₹ {property?.homeprice}
             </p>
-            {!property.bookedstatus ? <div className='flex flex-row items-center '>
+
+            {/* date picker */}
+<div className='flex justify-items-center mt-2'>
+            <div className="mb-6">
+              {/* <label
+                htmlFor="fromDate"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-500"
+              >
+                From Date
+              </label> */}
+              <input
+                type="date"
+                name="fromDate"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.fromDate}
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light  "
+                required=""
+                min={currentDate} // Set the minimum date dynamically
+                
+              />
+              {formik.touched.fromDate && formik.errors.fromDate ? (
+                <p className="text-sm text-red-600">{formik.errors.fromDate}</p>
+              ) : null}
+            </div>
+            <p className="mx-4 text-gray-500 mt-2">to</p>
+            <div className="mb-6 ">
+              {/* <label
+                htmlFor="toDate"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-500"
+              >
+                To Date
+              </label> */}
+              <input
+                type="date"
+                name="toDate"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.toDate}
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-300 dark:placeholder-gray-400 dark:text-gray-500 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light  "
+                required=""
+                min={currentDate } // Set the minimum date dynamically
+              />
+              {formik.touched.toDate && formik.errors.toDate ? (
+                <p className="text-sm text-red-600">{formik.errors.toDate}</p>
+              ) : null}
+            </div>
+
+            </div>
+
+
+            {property.bookedstatus == 'true'? <div className='flex flex-row items-center '>
               <button className='bg-red-300 text-red-700 font-bold py-3 px-[7rem] h-full'>THIS PROPERTY IS CURRENTLY NOT AVAILABLE.TRY AGAIN LATER</button>
             </div> : <div className='flex flex-row items-center gap-12 '>
-              <button onClick={() => navigate(`/bookacar/${property._id}`)} className=' bg-black text-white font-semibold py-3 px-[7rem] h-full '>Book Now</button>
+              <button onClick={!isLoading ? formik.handleSubmit : undefined} className=' bg-black text-white font-semibold py-3 px-[7rem] h-full '>
+                {isLoading ? (
+                  <div className='flex justify-center'>
+                    <svg
+                      className="animate-spin flex text-center h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-1.647zm10 3.647A7.962 7.962 0 0120 12h-4c0 3.042-1.135 5.824-3 7.938l-3-1.647z"
+                      />
+                    </svg>
+                  </div>
+                ) : (
+                  'Book Now'
+                )}
+              </button>
             </div>
+
             }
+
           </div>
           }
+
+
         </div>
+
       </div> : <div role="status " className='flex justify-center h-screen items-center'>
         <svg aria-hidden="true" className="w-10 h-10 mr-2  text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />

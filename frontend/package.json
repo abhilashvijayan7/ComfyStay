@@ -19,6 +19,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-otp-input": "^3.0.2",
+    "react-razorpay": "^1.2.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.11.2",
     "react-toastify": "^9.1.3",

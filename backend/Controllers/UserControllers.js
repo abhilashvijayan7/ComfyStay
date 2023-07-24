@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable indent */
 /* eslint-disable no-empty */
 /* eslint-disable no-undef */
@@ -5,11 +6,15 @@ const user = require('../Models/userModel');
 const serviceID = process.env.TWILIO_SERVICE_ID;
 const accountSID = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const razorPay = require('razorpay');
 
 const client = require('twilio')(accountSID, authToken);
 const maxAge = 3 * 24 * 60 * 60;
 const jwt = require('jsonwebtoken');
+const bookingModel = require('../Models/BookingModel');
 
 const userPropertyModel = require('../Models/UserPropertyModel');
 let newUser;
@@ -313,4 +318,137 @@ module.exports.viewProperty = async (req, res) => {
   }
 };
 
+module.exports.bookAProperty = (req, res) => {
+ 
+  try {
+    const fromDate = new Date(req.body.fromDate);
+    const toDate = new Date(req.body.toDate);
+    const currentDate = new Date();
+    const timeDiff = Math.abs(fromDate.getTime() - currentDate.getTime());
+    const dayFromCurrent = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+    if (dayFromCurrent > 3) {
+      return res.json({ status: false, message: 'You can only book before 3 days' });
+    } else if (toDate.getTime() <= currentDate.getTime() || toDate.getTime() < fromDate.getTime()) {
+      return res.json({ status: false, message: 'Please select a future date for the end of the booking' });
+    } else if (fromDate.getTime() === toDate.getTime()) {
+      return res.json({ status: false, message: 'The booking should be for at least one day' });
+
+    }
+    else {
+     
+      req.session.bookingDetails = req.body;
+      req.session.propertyId = req.params.id;
+      console.log( req.session.bookingDetails ,'kundaaaaaaa');
+      console.log(req.body);
+     
+      return res.json({ status: true });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.paymentPage = async (req, res, next) => {
+ 
+ 
+  try {
+    const bookingDeatails = req.session.bookingDetails;
+    console.log(req.session.bookingDetails,'booooookkkk');
+  
+    const fromDate = new Date(bookingDeatails.fromDate);
+    const toDate = new Date(bookingDeatails.toDate);
+    const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
+    const numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const propertyId = req.session.propertyId;
+    const property = await userPropertyModel.findOne({ _id: propertyId });
+    let totalAmount;
+    if (property) {
+     
+        totalAmount = numberOfDays * property.homeprice;
+    
+      res.json({ status: true, bookingDeatails, property, totalAmount, numberOfDays });
+    } else {
+      res.json({ status: false });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.orders = async (req, res, next) => {
+
+  try {
+    const instance = new razorPay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_SECRETE_KEY_ID,
+    });
+
+    const options = {
+      amount: req.body.amount * 100,
+      currency: 'INR',
+      receipt: crypto.randomBytes(10).toString('hex'),
+    };
+
+    instance.orders.create(options, (error, order) => {
+      if (error) {
+        console.log(error);
+        return res.json({ status: false, message: 'Something went wrong' });
+      }
+      // Handle successful order creation
+      return res.json({ status: true, order });
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: 'Server Error' });
+  }
+};
+
+
+module.exports.verify = async (req, res, next) => {
+  const amount = (req.body.amount) / 100;
+  const propertyId = req.body.propertyid;
+
+
+  const date = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
+    const sign = razorpay_order_id + '|' + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac('sha256', process.env.RAZORPAY_SECRETE_KEY_ID)
+      .update(sign.toString())
+      .digest('hex');
+
+    if (razorpay_signature === expectedSign) {
+      
+      const newOrder = new bookingModel({
+        user_id: req.user._id,
+        property_id: req.body.propertyid,
+        booked_At: date,
+        fromDate: req.body.fromDate,
+        toDate: req.body.toDate,
+        payment_id: req.body.razorpay_payment_id,
+        amount: req.body.amount,
+      });
+
+      const order = await newOrder.save();
+      const orderId = order._id;
+      await userPropertyModel.findOneAndUpdate({ _id: req.body.propertyid}, { $set: { bookedstatus: true } });
+      req.session.bookingDetails = null;
+      req.session.propertyId = null;
+      res.json({ status: true, message: 'Payment successfull', orderId });
+    } else {
+      res.json({ status: false, message: 'Invalid signature sent!' });
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: 'Internal Server Error!' });
+  }
+};
 

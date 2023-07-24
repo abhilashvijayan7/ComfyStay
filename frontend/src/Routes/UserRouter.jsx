@@ -11,6 +11,7 @@ import UserNewPasswordPage from '../Pages/User/UserNewPasswordPage'
 import PropertyDescribePage from '../Pages/User/PropertyDescribePage'
 import PropertyListPage from '../Pages/User/PropertyListPage'
 import PropertyDetailPage from '../Pages/User/PropertyDetailPage'
+import PaymentConfirmPage from '../Pages/User/PaymentConfirmPage'
 function UserRouter() {
   return (
    <Routes>
@@ -24,6 +25,7 @@ function UserRouter() {
 <Route path='/addyourhome' element={<PropertyDescribePage/>}/>
 <Route path='/propertylist' element={<PropertyListPage/>}/>
 <Route path='/propertydetail/:id' element={<PropertyDetailPage/>}/>
+<Route path='/paymentconfirm' element={<PaymentConfirmPage/>}/>
 
 
  

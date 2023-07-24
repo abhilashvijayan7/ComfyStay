@@ -9,12 +9,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const userRoutes = require('../backend/Routes/UserRoutes');
 const adminRoutes = require('../backend/Routes/AdminRoutes');
+const session = require('express-session');
+
 app.use(bodyParser.json());
 const cookieParser = require('cookie-parser');
 app.listen(process.env.PORT,()=>{
     console.log('Server Started on PORT ',process.env.PORT); 
 });
-mongoose.connect('mongodb://localhost:27017/ComfyStay',{
+mongoose.connect(process.env.DATABASE,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>{
@@ -22,6 +24,13 @@ mongoose.connect('mongodb://localhost:27017/ComfyStay',{
 }).catch((err)=>{
     console.log(err.message);
 });
+
+app.use(session({
+    secret: process.env.SESSION_SECRET_KEY, // Add a secret key for session encryption
+    resave: false,
+    saveUninitialized: true
+}));
+
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
