@@ -80,3 +80,10 @@ export const orderApi = (amount) => {
 export const getOrderDetailsAPI = (orderId) => {
     return userInstance.get(`/getorderdetails/${orderId}`)
 }
+export const bookingDetailsApi = () => {
+    return userInstance.get("/bookingdetails")
+}
+
+export const cancelOrder = (id) => {
+    return userInstance.post(`/cancelorder/${id}`)
+}

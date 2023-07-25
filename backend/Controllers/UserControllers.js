@@ -193,31 +193,7 @@ module.exports.propertysubmit = async (req, res) => {
       const imagePath = req.files.image[0].path;
       // eslint-disable-next-line quotes
       const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
-      // await new userPropertyModel({
-
-      //   userId: req.user._id,
-      //   hometype: req.body.hometype,
-      //   propertynumber: req.body.propertynumber,
-      //   address: req.body.address,
-      //   guests: req.body.guests,
-      //   bedrooms: req.body.bedrooms,
-      //   beds: req.body.beds,
-      //   bathrooms: req.body.bathrooms,
-      //   wifi: req.body.wifi,
-      //   tv: req.body.tv,
-      //   kitchen: req.body.kitchen,
-      //   washingmachine: req.body.washingmachine,
-      //   freeparking: req.body.freeparking,
-      //   paidparking: req.body.paidparking,
-      //   airconditioning: req.body.airconditioning,
-      //   dedicatedworkspace: req.body.dedicatedworkspace,
-      //   homephoto: modifiedImagePath,
-      //   homeprice: req.body.homeprice
-
-      // }).save();
-
-
-
+     
       await new userPropertyModel({
         userId: req.user._id,
         hometype: req.body.hometype,
@@ -340,7 +316,7 @@ module.exports.bookAProperty = (req, res) => {
 
       req.session.bookingDetails = req.body;
       req.session.propertyId = req.params.id;
-      console.log(req.session.bookingDetails, 'kundaaaaaaa');
+
       console.log(req.body);
 
       return res.json({ status: true });
@@ -355,7 +331,7 @@ module.exports.paymentPage = async (req, res, next) => {
 
   try {
     const bookingDeatails = req.session.bookingDetails;
-    console.log(req.session.bookingDetails, 'booooookkkk');
+
 
     const fromDate = new Date(bookingDeatails.fromDate);
     const toDate = new Date(bookingDeatails.toDate);
@@ -460,7 +436,7 @@ module.exports.getOrderDetails = async (req, res, next) => {
       .findOne({ _id: orderId })
       .populate('user_id')
       .populate({ path: 'property_id', populate: { path: 'userId' } });
-    console.log(order, 'ordeeeeeeeeennnnn');
+
     if (order) {
       res.json({ status: true, order });
     } else {
@@ -469,5 +445,38 @@ module.exports.getOrderDetails = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.json({ status: false, message: 'Internal server Error' });
+  }
+};
+
+module.exports.getBookingDetails = async (req, res, next) => {
+  try {
+
+    const id = req.user._id;
+    const bookings = await bookingModel.find({ user_id: id }).populate('property_id').sort({ _id: -1 });
+
+    if (bookings) {
+      if (bookings.length > 0) {
+        res.json({ status: true, bookings });
+      } else {
+        res.json({ status: false });
+      }
+    } else {
+      res.json({ status: false, message: 'Something Went Wrong' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ status: false, message: 'Internal Server Error' });
+  }
+};
+
+module.exports.cancelOrder = async (req, res, next) => {
+  try {
+    const bookingId = req.params.id;
+    const cancelledBooking = await bookingModel.findOneAndUpdate({ _id: bookingId }, { $set: { cancelStatus: true } }).populate('property_id');
+    const property_id = cancelledBooking.property_id._id;
+    await userPropertyModel.findOneAndUpdate({ _id: property_id }, { $set: { bookedstatus: false } });
+    res.json({ status: true, message: 'Booking Cancelled!!', cancelledBooking });
+  } catch (error) {
+    console.log(error);
   }
 };

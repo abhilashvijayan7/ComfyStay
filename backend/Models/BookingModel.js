@@ -39,6 +39,10 @@ const bookingSchema = new mongoose.Schema({
     cancelStatus: {
         type: Boolean,
         default: false
+    },
+    completed: {
+        type: Boolean,
+        default: false
     }
 });
 

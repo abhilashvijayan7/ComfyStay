@@ -25,6 +25,10 @@ function UserHeader() {
 
     navigate("/propertylist");
   };
+  const bookingList = () => {
+
+    navigate("/bookinglist");
+  };
   return (
     <div>
       <nav className="bg-white border-gray-500 px-2 sm:px-4 py-2.5 dark:bg-gray-800">
@@ -58,6 +62,15 @@ function UserHeader() {
                   className="block mt-1 py-2 pl-3 pr-4 md:text-lg text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                 >
                   My properties
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={bookingList}
+                  href="#"
+                  className="block mt-1 py-2 pl-3 pr-4 md:text-lg text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                >
+                  My bookings
                 </button>
               </li>
               <li>
