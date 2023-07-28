@@ -17,3 +17,17 @@ export const updatePropertyStatus = (propertyId, status) => {
     return adminInstance.put(`/properties/${propertyId}/status`, { status });
   };
 
+
+  export const bookingDetailsApi = (page, limit) => {
+    return adminInstance.get('/bookingdetails', {
+        params: {
+            limit,
+            page
+        }
+    })
+}
+
+export const completeOrder = (id) => {
+    return adminInstance.post(`/completeorder/${id}`)
+}
+

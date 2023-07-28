@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const userPropertyModel = require('../Models/UserPropertyModel');
+const bookingModel =require ('../Models/BookingModel');
 
 const admin = require('../Models/AdminModel');
 const bcrypt = require('bcrypt');
@@ -33,36 +35,7 @@ module.exports.adminLogin = async (req, res) => {
     }
 };
 
-module.exports.propertylist = async (req, res) => {
-    try {
-  
-        // const list = await userPropertyModel.find({});
-        // if (!list || list.length === 0) {
-        //     res.json({ status: false, message: 'No property found' });
-        // } else{
-        //     res.json({ status: true, homelist: list });
-  
-        // }
-        const skip = (req.query.page - 1) * req.query.limit;
-        const limit = parseInt(req.query.limit);
-        const totalCount = await userPropertyModel.countDocuments({});
-        const totalPages = Math.ceil(totalCount / limit);
-        const list = await userPropertyModel.find({}).skip(skip).limit(limit);
-       
 
-
-        if (!list || list.length === 0) {
-            res.json({ status: false, message: 'No property found' });
-
-        } else{
-            res.json({ status: true, homelist: list , totalCount, totalPages });
-      
-        }
-
-    } catch (error) {
-        res.json({ status: false, message: error.message });
-    }
-};
 // module.exports.updatePropertyStatus = async (req, res) => {
 //     try {
 //         const propertyId = req.params.id;
@@ -126,5 +99,74 @@ module.exports.updatePropertyStatus = async (req, res) => {
     } catch (error) {
         console.error('Failed to update property status:', error);
         res.status(500).json({ status: false, message: 'Failed to update property status.' });
+    }
+};
+
+module.exports.propertylist = async (req, res) => {
+    try {
+  
+        // const list = await userPropertyModel.find({});
+        // if (!list || list.length === 0) {
+        //     res.json({ status: false, message: 'No property found' });
+        // } else{
+        //     res.json({ status: true, homelist: list });
+  
+        // }
+        const skip = (req.query.page - 1) * req.query.limit;
+        const limit = parseInt(req.query.limit);
+        const totalCount = await userPropertyModel.countDocuments({});
+        const totalPages = Math.ceil(totalCount / limit);
+        const list = await userPropertyModel.find({}).skip(skip).limit(limit);
+       
+
+
+        if (!list || list.length === 0) {
+            res.json({ status: false, message: 'No property found' });
+
+        } else{
+            res.json({ status: true, homelist: list , totalCount, totalPages });
+      
+        }
+
+    } catch (error) {
+        res.json({ status: false, message: error.message });
+    }
+};
+
+
+module.exports.getBookingDetails = async (req, res, next) => {
+    try {
+  
+        const id = req.admin._id;
+
+        const skip = (req.query.page - 1) * req.query.limit;
+        const limit = parseInt(req.query.limit);
+        const totalCount = await bookingModel.countDocuments({});
+        const totalPages = Math.ceil(totalCount / limit);
+        const bookings = await bookingModel.find().populate('property_id').populate('user_id').sort({ _id: -1 }).skip(skip).limit(limit);
+        if (bookings) {
+            if (bookings.length > 0) {
+                res.json({ status: true, bookings, totalCount, totalPages });
+            } else {
+                res.json({ status: false });
+            }
+        } else {
+            res.json({ status: false, message: 'Something Went Wrong' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({ status: false, message: 'Internal Server Error' });
+    }
+};
+  
+module.exports.completeOrder = async (req, res, next) => {
+    try {
+        const bookingId = req.params.id;
+        const completedBooking = await bookingModel.findOneAndUpdate({ _id: bookingId }, { $set: { completed: true } }).populate('property_id');
+        const property_id = completedBooking.property_id._id;
+        await userPropertyModel.findOneAndUpdate({ _id: property_id }, { $set: { bookedstatus: false } });
+        res.json({ status: true, message: 'Booking completed!!', completedBooking });
+    } catch (error) {
+        console.log(error);
     }
 };

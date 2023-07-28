@@ -16,7 +16,7 @@ function BookingList() {
 
 
     const [bookings, setBookings] = useState("")
-   
+
     const [showModal, setShowModal] = useState(false)
     const [orderId, setOrderId] = useState("")
     const [cancelled, setCancelled] = useState(false)
@@ -69,7 +69,7 @@ function BookingList() {
         }
     }
 
-   
+
 
 
 
@@ -121,7 +121,7 @@ function BookingList() {
                                                         </p>
                                                         <p className='w-[200px] pl-1'>
 
-                                                            {booking.property_id.address.city}, {booking.property_id.address.district} - {booking.property_id.address.pincode}, {booking.property_id.address.state} 
+                                                            {booking.property_id.address.city}, {booking.property_id.address.district} - {booking.property_id.address.pincode}, {booking.property_id.address.state}
                                                         </p>
 
 
@@ -213,12 +213,13 @@ function BookingList() {
                                             </div>
                                         </div>
                                     </div>
-                                    {booking.cancelStatus ?
+                                    {booking.completed ? (
+                                        <div className='flex justify-center items-center w-full my-2 mt-8'><button className='flex items-center justify-center px-4 py-2 bg-black text-green-600'>Completed</button></div>
+                                    ) : (booking.cancelStatus ? (
                                         <div className='flex justify-center items-center w-full my-2 mt-8'><button className='flex items-center justify-center px-4 py-2 bg-black text-red-600'>Order Canceled</button></div>
-                                        :
+                                    ) : (
                                         <div className='flex justify-center items-center w-full my-2 mt-8'><button onClick={() => { handleCancel(booking._id) }} className='flex items-center justify-center px-4 py-2 bg-black text-white'>Cancel Order</button></div>
-
-                                    }
+                                    ))}
 
                                 </div>
 

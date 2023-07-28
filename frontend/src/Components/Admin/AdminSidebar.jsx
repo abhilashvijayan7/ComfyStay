@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 
 import {
-  AiOutlineTeam,
+  // AiOutlineTeam,
   AiOutlineAppstore,
   AiOutlineMessage,
   AiOutlinePicture,
@@ -21,9 +21,9 @@ function AdminSidebar() {
 
   const menus = [
     { name: "Dashboard", link: "/", icon: AiOutlineAppstore },
-    { name: "Customers", link: "/", icon: AiOutlineTeam },
+    // { name: "Customers", link: "/", icon: AiOutlineTeam },
     { name: "Properties", link: "/admin/propertylist", icon: AiOutlineMessage },
-    { name: "Trips", link: "/", icon: AiOutlinePicture },
+    { name: "Trips", link: "/admin/bookinglist", icon: AiOutlinePicture },
     { name: "Sign Out", icon: AiOutlineLogout, onClick: handleLogout , link: "/admin/login" },
   ];
 

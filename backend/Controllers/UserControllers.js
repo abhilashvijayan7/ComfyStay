@@ -16,6 +16,7 @@ const maxAge = 3 * 24 * 60 * 60;
 const jwt = require('jsonwebtoken');
 const bookingModel = require('../Models/BookingModel');
 
+
 const userPropertyModel = require('../Models/UserPropertyModel');
 let newUser;
 // eslint-disable-next-line no-unused-vars
@@ -193,7 +194,7 @@ module.exports.propertysubmit = async (req, res) => {
       const imagePath = req.files.image[0].path;
       // eslint-disable-next-line quotes
       const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
-     
+
       await new userPropertyModel({
         userId: req.user._id,
         hometype: req.body.hometype,
@@ -244,6 +245,8 @@ module.exports.propertylist = async (req, res) => {
     const totalCount = await userPropertyModel.find({ userId: userId }).countDocuments({});
     const totalPages = Math.ceil(totalCount / limit);
     const list = await userPropertyModel.find({ userId: userId }).skip(skip).limit(limit);
+    const completed = await bookingModel.find({$and:[{user_id: userId} ,{completed:true}]});
+    console.log('kannaa completeed ',completed);
 
 
     if (!list || list.length === 0) {

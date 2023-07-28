@@ -8,7 +8,7 @@ function PropertyList() {
     const [property, setProperty] = useState(null);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const limit = 2;
+    const limit = 6;
 
     useEffect(() => {
         let isMounted = true; // Add a flag to track component mount status
@@ -92,16 +92,16 @@ function PropertyList() {
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Location
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                {/* <th scope="col" className="px-6 py-3">
                                     <span className="sr-only">Edit</span>
-                                </th>
+                                </th> */}
                             </tr>
                         </thead>
                         <tbody>
                             {property &&
                                 property.map((item, index) => (
                                     <tr className="bg-white border-b hover:bg-gray-50" key={index}>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{index + 1}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{(index + currentPage * limit) - limit + 1}</td>
 
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.propertynumber}</td>
 
@@ -118,14 +118,14 @@ function PropertyList() {
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.beds}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.bathrooms}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.address.houseName}, {item.address.city}, {item.address.district}-{item.address.pincode}, {item.address.state}  phone:{item.address.phoneNumber}</td>
-                                        <td className="px-6 py-4 text-right">
+                                        {/* <td className="px-6 py-4 text-right">
                                             <a
                                                 href="#"
                                                 className="font-medium text-blue-600 hover:underline"
                                             >
                                                 Edit
                                             </a>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                         </tbody>
