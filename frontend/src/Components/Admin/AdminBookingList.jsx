@@ -96,10 +96,10 @@ function AdminBookingList() {
                     <table className="w-full text-sm text-left">
                         <thead className="text-xs bg-gray-200 text-gray-800 uppercase">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-center">
+                                <th scope="col" className="px-2 py-3 text-center">
                                     No
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-center">
+                                <th scope="col" className="px-3 py-3 text-center">
                                     Property number
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
@@ -107,21 +107,21 @@ function AdminBookingList() {
                                 </th>
 
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    No guests
+                                    Host
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     price
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Bedrooms
+                                    Booked by
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Beds
+                                    From
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Bathrooms
+                                    To
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-center">
+                                <th scope="col" className="px-1 py-3 text-center">
                                     Location
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
@@ -145,14 +145,15 @@ function AdminBookingList() {
                                                 alt=""
                                             />
                                         </td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.guests}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.homeprice}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.bedrooms}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.beds}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.bathrooms}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.property_id.address.houseName}, {booking.property_id.address.city}, {booking.property_id.address.district}-{booking.property_id.address.pincode}, {booking.property_id.address.state}   phone:{booking.property_id.address.phoneNumber}</td>
-                                        <td>{booking.cancelStatus ? <p>Cancelled</p> : <p>Not cancelled</p>}</td>
-                                        <td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.host_id.username}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">₹{booking.amount}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.user_id.username}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.fromDate}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.toDate}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center w-[230px]">{booking.property_id.address.houseName}, {booking.property_id.address.city}, {booking.property_id.address.district}-{booking.property_id.address.pincode}, {booking.property_id.address.state}   phone:{booking.property_id.address.phoneNumber}</td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{booking.cancelStatus ? <p className='text-red-500'>Cancelled</p> : <p className='text-green-600'>Not cancelled</p>}</td>
+
+                                        <td >
                                             {showModal && <div id="popup-modal" className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
 
                                                 <div className="relative w-full max-w-md max-h-full">
@@ -177,13 +178,14 @@ function AdminBookingList() {
                                                 </div>
                                             </div>}
                                             {booking.cancelStatus ? (
-                                                <button className='bg-green-500' disabled>Available</button>
+                                                <button className="px-2 py-1 mx-6 my-4   text-center rounded-md bg-green-200 text-green-800 " disabled>Available</button>
                                             ) : (booking.completed ? (
-                                                <button className='bg-green-500' disabled>Available</button>
+                                                <button className="px-2 py-1 mx-6 my-4   text-center rounded-md bg-green-200 text-green-800" disabled>Available</button>
                                             ) : (
-                                                <button className='bg-red-500' onClick={() => handleComplete(booking._id)}>Booked</button>
+                                                <button className="px-2 py-1 mx-7 my-4   text-center rounded-md bg-yellow-200 text-yellow-800" onClick={() => handleComplete(booking._id)}>Booked</button>
                                             ))}
                                         </td>
+                                       
                                     </tr>
                                 ))}
                         </tbody>

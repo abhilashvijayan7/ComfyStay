@@ -239,20 +239,25 @@ module.exports.propertysubmit = async (req, res) => {
 module.exports.propertylist = async (req, res) => {
   try {
     const userId = req.user._id;
-
+    let cash = 0;
+    let earnings = 0;
     const skip = (req.query.page - 1) * req.query.limit;
     const limit = parseInt(req.query.limit);
     const totalCount = await userPropertyModel.find({ userId: userId }).countDocuments({});
     const totalPages = Math.ceil(totalCount / limit);
-    const list = await userPropertyModel.find({ userId: userId }).skip(skip).limit(limit);
-    const completed = await bookingModel.find({$and:[{user_id: userId} ,{completed:true}]});
-    console.log('kannaa completeed ',completed);
-
-
+    const list = await userPropertyModel.find({ userId: userId }).sort({ _id: -1 }).skip(skip).limit(limit);
+    const completed = await bookingModel.find({ $and: [{ host_id: userId }, { completed: true }] });
+    if (completed) {
+      completed.map((complete) => {
+        cash = cash + complete.amount;
+      });
+      earnings = earnings + (cash * .7);
+      earnings = earnings.toFixed(2);
+    }
     if (!list || list.length === 0) {
       res.json({ status: false, message: 'No property found' });
     } else {
-      res.json({ status: true, homelist: list, totalCount, totalPages });
+      res.json({ status: true, homelist: list, totalCount, totalPages ,earnings});
 
     }
   } catch (error) {
@@ -270,7 +275,7 @@ module.exports.homePropertylist = async (req, res) => {
     const totalCount = await userPropertyModel.find({ status: 'approved' }).countDocuments({});
     const totalPages = Math.ceil(totalCount / limit);
 
-    const list = await userPropertyModel.find({ status: 'approved' }).skip(skip).limit(limit);
+    const list = await userPropertyModel.find({ status: 'approved' }).sort({ _id: -1 }).skip(skip).limit(limit);
     if (!list || list.length === 0) {
       res.json({ status: false, message: 'No property found' });
     } else {
@@ -402,11 +407,13 @@ module.exports.verify = async (req, res, next) => {
       .createHmac('sha256', process.env.RAZORPAY_SECRETE_KEY_ID)
       .update(sign.toString())
       .digest('hex');
-
+    const hostId = await userPropertyModel.findOne({ _id: req.body.propertyid }, { userId: 1, _id: 0 });
+    const host_id = hostId.userId;
     if (razorpay_signature === expectedSign) {
 
       const newOrder = new bookingModel({
         user_id: req.user._id,
+        host_id,
         property_id: req.body.propertyid,
         booked_At: date,
         fromDate: req.body.fromDate,

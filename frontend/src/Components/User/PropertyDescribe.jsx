@@ -7,7 +7,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from 'formik'
@@ -157,11 +157,32 @@ const validationSchema = Yup.object().shape({
 
     return (
         <>
-            <header className="py-6 bg-gray-800">
-                <div className="flex items-center justify-center sm:justify-start">
-                    <p className="text-white px-4 sm:px-12 text-2xl sm:text-2xl font-serif">
-                        AddProperty
+               <header className="py-6 bg-gray-800">
+                <div className="flex items-center justify-center sm:justify-between">
+                    <p style={{ fontSize: '24px' }} className="text-white px-4 sm:px-28  text-xl sm:text-2xl font-serif">
+                        Add Property
                     </p>
+                    <div className='px-6'>
+                    <div onClick={() => navigate("/")}>
+                        <div className="inline-flex items-center px-4 py-2  text-white bg-gray-800 border border-[#53575c]  rounded-md hover:bg-gray-700 hover:cursor-pointer focus:outline-none focus:ring">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-3 h-3 mr-2"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                                />
+                            </svg>
+                            <div className="text-sm font-medium inline" ></div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </header>
 

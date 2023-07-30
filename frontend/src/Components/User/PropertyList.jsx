@@ -3,11 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { propertylist } from '../../Services/UserApi';
+import { useNavigate } from 'react-router-dom'
+
 
 function PropertyList() {
+    const navigate = useNavigate("")
+
     const [property, setProperty] = useState(null);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [earnings, setEarnings] = useState(0);
     const limit = 6;
 
     useEffect(() => {
@@ -20,6 +25,7 @@ function PropertyList() {
                         if (response.data.status) {
                             setProperty(response.data.homelist);
                             setTotalPages(response.data.totalPages);
+                            setEarnings(response.data.earnings)
                         } else {
                             toast(response.data.message, {
                                 position: toast.POSITION.TOP_CENTER, // Set toast position to top-center
@@ -51,74 +57,126 @@ function PropertyList() {
     };
 
     return (
-        <>
-            <header className="py-7 bg-gray-800">
-                <div className="flex items-center justify-center sm:justify-start">
-                    <p className="text-white px-4 sm:px-12 text-2xl sm:text-3xl font-serif">
+        <div>
+            <header className="py-6 bg-gray-800">
+                <div className="flex items-center justify-center sm:justify-between">
+                    <p style={{ fontSize: '24px' }} className="text-white px-4 sm:px-28  text-xl sm:text-2xl font-serif">
                         PropertyList
                     </p>
+                    <div className='px-6'>
+                    <div onClick={() => navigate("/")}>
+                        <div className="inline-flex items-center px-4 py-2  text-white bg-gray-800 border border-[#53575c]  rounded-md hover:bg-gray-700 hover:cursor-pointer focus:outline-none focus:ring">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-3 h-3 mr-2"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M7 16l-4-4m0 0l4-4m-4 4h18"
+                                />
+                            </svg>
+                            <div className="text-sm font-medium inline" ></div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </header>
 
-            <div className="overflow-x-auto shadow-md sm:rounded-lg m-10">
-                <div className="inline-block min-w-full overflow-hidden bg-gray-100">
-                    <table className="w-full text-sm text-left">
-                        <thead className="text-xs bg-gray-200 text-gray-800 uppercase">
-                            <tr>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    No
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    property number
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    image
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Status
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    no guests
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Bedrooms
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Beds
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Bathrooms
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Location
-                                </th>
-                                {/* <th scope="col" className="px-6 py-3">
+
+            <div className='h-screen'>
+
+                <div className='flex justify-end mx-6 my-5  '>
+                    <p className='border px-3 py-2 rounded-md bg-black text-white font-normal'>Total Earnings : <p className='text-green-500 inline font-semibold'>₹{earnings}</p> </p>
+                </div>
+                <div className="overflow-x-auto shadow-md sm:rounded-lg m-6">
+
+                    <div className="inline-block min-w-full  overflow-hidden bg-gray-100">
+
+
+                        <table className="w-full h-full text-sm text-left">
+                            <thead className="text-xs bg-gray-200 text-gray-800 uppercase">
+                                <tr>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        No
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        property number
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        image
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        Status
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        no guests
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        price
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        Bedrooms
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        Beds
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        Bathrooms
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                        Location
+                                    </th>
+                                    <th scope="col" className="px-6 py-3 text-center">
+                                       Booked Status
+                                    </th>
+                                    {/* <th scope="col" className="px-6 py-3">
                                     <span className="sr-only">Edit</span>
                                 </th> */}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {property &&
-                                property.map((item, index) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={index}>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{(index + currentPage * limit) - limit + 1}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {property &&
+                                    property.map((item, index) => (
+                                        <tr className="bg-white border-b hover:bg-gray-50" key={index}>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{(index + currentPage * limit) - limit + 1}</td>
 
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.propertynumber}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.propertynumber}</td>
 
-                                        <td className="flex items-center justify-center">
-                                            <img
-                                                src={`${import.meta.env.VITE_SERVER_URL}/${item.homephoto}`}
-                                                className="h-20 w-20 object-contain mx-auto"
-                                                alt=""
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.status}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.guests}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.bedrooms}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.beds}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.bathrooms}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.address.houseName}, {item.address.city}, {item.address.district}-{item.address.pincode}, {item.address.state}  phone:{item.address.phoneNumber}</td>
-                                        {/* <td className="px-6 py-4 text-right">
+                                            <td className="flex items-center justify-center m-1">
+                                                <img
+                                                    src={`${import.meta.env.VITE_SERVER_URL}/${item.homephoto}`}
+                                                    className="h-20 w-20 object-contain mx-auto"
+                                                    alt=""
+                                                />
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.status}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.guests}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">₹{item.homeprice}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.bedrooms}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.beds}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.bathrooms}</td>
+                                            <td className="px-6 py-4 text-gray-700 text-center">{item.address.houseName}, {item.address.city}, {item.address.district}-{item.address.pincode}, {item.address.state}  phone:{item.address.phoneNumber}</td>
+
+                                            <td className="px-6 py-4 text-gray-700 text-center">
+                                                {item.bookedstatus ? (
+                                                    <p className='text-yellow-500'>booked</p>
+                                                ) : (
+                                                    item.status === 'pending' || item.status === 'declined' ? (
+                                                        <p className='text-red-500'>Not Listed</p>
+                                                    ) : (
+                                                        <p className='text-green-500'>Available</p>
+                                                    )
+                                                )}
+                                            </td>
+
+
+
+                                            {/* <td className="px-6 py-4 text-right">
                                             <a
                                                 href="#"
                                                 className="font-medium text-blue-600 hover:underline"
@@ -126,94 +184,100 @@ function PropertyList() {
                                                 Edit
                                             </a>
                                         </td> */}
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            {totalPages != null && totalPages > 0 && (
-                <footer className="flex justify-center items-center mt-0 mb-10">
-                    <>
-                        <nav aria-label="Page navigation example">
-                            <ul className="inline-flex -space-x-px text-sm">
-
-
-                                <li>
-                                    <button
-                                        className={`flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg ${currentPage === 1 ? 'hidden' : ''
-                                            } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                        onClick={() => handlePageChange(currentPage - 1)}
-                                    // disabled={currentPage === 1}
-                                    >
-                                        <svg
-                                            className="w-2.5 h-2.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 6 10"
-                                        >
-                                            <path
-                                                stroke="currentColor"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M5 1 1 5l4 4"
-                                            />
-                                        </svg>
-
-                                    </button>
-                                </li>
+                {totalPages != null && totalPages > 0 && (
+                    <footer className="flex justify-center items-center mt-0 mb-10">
+                        <>
+                            <nav aria-label="Page navigation example">
+                                <ul className="inline-flex -space-x-px text-sm">
 
 
-                                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
-                                    <li key={pageNumber}>
+                                    <li>
                                         <button
-                                            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${pageNumber === currentPage && 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-red-500'
-                                                } dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                            onClick={() => handlePageChange(pageNumber)}
+                                            className={`flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg ${currentPage === 1 ? 'hidden' : ''
+                                                } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                        // disabled={currentPage === 1}
                                         >
-                                            {pageNumber}
+                                            <svg
+                                                className="w-2.5 h-2.5"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 6 10"
+                                            >
+                                                <path
+                                                    stroke="currentColor"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M5 1 1 5l4 4"
+                                                />
+                                            </svg>
+
                                         </button>
                                     </li>
-                                ))}
+
+
+                                    {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+                                        <li key={pageNumber}>
+                                            <button
+                                                className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 ${pageNumber === currentPage && 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-red-500'
+                                                    } dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                                                onClick={() => handlePageChange(pageNumber)}
+                                            >
+                                                {pageNumber}
+                                            </button>
+                                        </li>
+                                    ))}
 
 
 
-                                <li>
-                                    <button
-                                        className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg ${currentPage === totalPages ? 'hidden' : ''
-                                            } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
-                                        onClick={() => handlePageChange(currentPage + 1)}
-                                    // disabled={currentPage === totalPages}
-                                    >
-                                        <svg
-                                            className="w-2.5 h-2.5"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 6 10"
+                                    <li>
+                                        <button
+                                            className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-lg ${currentPage === totalPages ? 'hidden' : ''
+                                                } hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                        // disabled={currentPage === totalPages}
                                         >
-                                            <path
-                                                stroke="currentColor"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="m1 9 4-4-4-4"
-                                            />
-                                        </svg>
+                                            <svg
+                                                className="w-2.5 h-2.5"
+                                                aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 6 10"
+                                            >
+                                                <path
+                                                    stroke="currentColor"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="m1 9 4-4-4-4"
+                                                />
+                                            </svg>
 
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
-                    </>
-                </footer>
-            )}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </>
 
-        </>
+
+
+                    </footer>
+                )}
+            </div>
+        </div>
     );
+
+
+
 }
 
 

@@ -7,6 +7,11 @@ const bookingSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    host_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     property_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'AddProperty',

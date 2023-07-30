@@ -116,9 +116,7 @@ module.exports.propertylist = async (req, res) => {
         const limit = parseInt(req.query.limit);
         const totalCount = await userPropertyModel.countDocuments({});
         const totalPages = Math.ceil(totalCount / limit);
-        const list = await userPropertyModel.find({}).skip(skip).limit(limit);
-       
-
+        const list = await userPropertyModel.find({}).populate({ path: 'userId', select: 'username' }).sort({ _id: -1 }).skip(skip).limit(limit);
 
         if (!list || list.length === 0) {
             res.json({ status: false, message: 'No property found' });
@@ -143,7 +141,7 @@ module.exports.getBookingDetails = async (req, res, next) => {
         const limit = parseInt(req.query.limit);
         const totalCount = await bookingModel.countDocuments({});
         const totalPages = Math.ceil(totalCount / limit);
-        const bookings = await bookingModel.find().populate('property_id').populate('user_id').sort({ _id: -1 }).skip(skip).limit(limit);
+        const bookings = await bookingModel.find().populate('property_id').populate('user_id').populate('host_id').sort({ _id: -1 }).skip(skip).limit(limit);
         if (bookings) {
             if (bookings.length > 0) {
                 res.json({ status: true, bookings, totalCount, totalPages });

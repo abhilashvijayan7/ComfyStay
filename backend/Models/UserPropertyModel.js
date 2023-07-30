@@ -111,9 +111,9 @@ const addPropertySchema = new mongoose.Schema({
         required: true
     },
     bookedstatus:{
-        type:String,
+        type:Boolean,
         required:true,
-        default:'false'
+        default:false
     }
      
 });

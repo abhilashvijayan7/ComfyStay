@@ -127,7 +127,9 @@ function AdminPropertylist() {
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Image
                                 </th>
-
+                                <th scope="col" className="px-14 py-3 text-center">
+                                   Host 
+                                </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     No guests
                                 </th>
@@ -166,9 +168,9 @@ function AdminPropertylist() {
                                                 alt=""
                                             />
                                         </td>
+                                        <td className="px-6 py-4 text-gray-700 text-center">{item.userId.username}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.guests}</td>
-                                        <td className="px-6 py-4 text-gray-700 text-center">{item.homeprice}</td>
-
+                                        <td className="px-6 py-4 text-gray-700 text-center">₹{item.homeprice}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.bedrooms}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.beds}</td>
                                         <td className="px-6 py-4 text-gray-700 text-center">{item.bathrooms}</td>

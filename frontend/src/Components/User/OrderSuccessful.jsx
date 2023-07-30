@@ -3,7 +3,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 
-import Userfooter from './Userfooter'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getOrderDetailsAPI } from '../../Services/UserApi'
 import { toast } from 'react-toastify'

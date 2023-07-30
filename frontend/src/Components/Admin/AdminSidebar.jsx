@@ -23,7 +23,7 @@ function AdminSidebar() {
     { name: "Dashboard", link: "/", icon: AiOutlineAppstore },
     // { name: "Customers", link: "/", icon: AiOutlineTeam },
     { name: "Properties", link: "/admin/propertylist", icon: AiOutlineMessage },
-    { name: "Trips", link: "/admin/bookinglist", icon: AiOutlinePicture },
+    { name: "Bookings", link: "/admin/bookinglist", icon: AiOutlinePicture },
     { name: "Sign Out", icon: AiOutlineLogout, onClick: handleLogout , link: "/admin/login" },
   ];
 
@@ -34,7 +34,7 @@ function AdminSidebar() {
   };
 
   return (
-    <div className={`bg-[#0e0e0e] min-h-screen ${open ? "w-72" : "w-16"} duration-500 text-gray-100 px-4`}>
+    <div className={`bg-[#0e0e0e] min-h-screen ${open ? "w-40" : "w-16"} duration-500 text-gray-100 px-4`}>
       <div className="py-3 flex justify-end">
         <AiOutlineBars size={26} className="cursor-pointer" onClick={toggleSidebar} />
       </div>
