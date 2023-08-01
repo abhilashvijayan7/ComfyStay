@@ -33,7 +33,6 @@ function Signup() {
     try {
       const { data } = await userSignup(inputs)
       if (data.status) {
-        console.log(inputs);
         navigate('/otp')
       } else {
         toast.error(data.message, {

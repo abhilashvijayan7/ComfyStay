@@ -37,7 +37,7 @@ function Dashboard({ total }) {
                                     {data.heading}
                                 </p>
                                 <p className={`font-semibold text-center ${i === 1 ? "text-green-500" : "text-cyan-400"}`}>
-                                    {i === 1 ? `₹${data.value * 0.3}` : data.value}
+                                    {i === 1 ? `₹${(data.value * 0.3).toFixed(2)}` : data.value}
                                 </p>
                             </div>
                         </div>

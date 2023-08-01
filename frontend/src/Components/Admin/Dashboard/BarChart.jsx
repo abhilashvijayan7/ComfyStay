@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +11,9 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+
 function BarChart({ revenueDetails }) {
+  // Ensure ChartJS plugins are registered only once
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -26,28 +28,20 @@ function BarChart({ revenueDetails }) {
     plugins: {
       legend: {
         position: "top",
-      },
+      }, 
       title: {
         display: true,
-        text: "weekly revenue",
+        text: "Weekly Revenue",
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `Revenue: ₹ ${context.parsed.y.toFixed(2)}`,
+        },
       },
     },
   };
-  for (let i = 1; i <= 7; i++) {
-    let exists = false;
-    revenueDetails.forEach((data) => {
-      if (i === data.day) {
-        exists = true;
-        return
-      }
-    });
 
-    if (!exists) {
-      revenueDetails.push({ total: 0, day: i });
-    }
-  }
-  const revenue= revenueDetails.sort((a,b)=>a.day-b.day)
-
+  // Prepare labels for each day of the week
   const labels = [
     "Sunday",
     "Monday",
@@ -58,16 +52,25 @@ function BarChart({ revenueDetails }) {
     "Saturday",
   ];
 
+  // Create an array to hold revenue data for each day of the week
+  const revenueData = labels.map((day, index) => {
+    // Find the revenue data for the corresponding day (if available)
+    const dataForDay = revenueDetails.find((data) => data._id === index + 1);
+    // Calculate the revenue for that day or set it to 0 if not available
+    return dataForDay ? dataForDay.total * 0.3 : 0;
+  });
+
   const data = {
     labels,
     datasets: [
       {
-        label: "revenue",
-        data: revenue?.map((revenue)=>revenue.total*.3),
+        label: "Revenue",
+        data: revenueData,
         backgroundColor: "rgb(205, 235, 255)",
       },
     ],
   };
+
   return <Bar options={options} data={data} />;
 }
 

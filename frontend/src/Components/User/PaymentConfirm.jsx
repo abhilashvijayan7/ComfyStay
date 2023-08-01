@@ -72,7 +72,6 @@ function PaymentConfirm() {
                 color: '#368E88'
             }
         };
-        console.log(options,"opyio")
         const rzp1 = new Razorpay(options);
         // const rzp2 = new Razorpay({
         //     key_id: import.meta.env.VITE_RAZORPAY_KEY,
@@ -84,7 +83,6 @@ function PaymentConfirm() {
         try {
             setIsLoading(true)
             const { data } = await orderApi({ amount: totalAmount })
-            console.log(data,"data");
             initPayment(data.order)
         } catch (error) {
             setIsLoading(false)

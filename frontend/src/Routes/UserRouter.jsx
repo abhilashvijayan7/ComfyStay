@@ -14,6 +14,7 @@ import PropertyDetailPage from '../Pages/User/PropertyDetailPage'
 import PaymentConfirmPage from '../Pages/User/PaymentConfirmPage'
 import OrderSuccessPage from '../Pages/User/OrderSuccessPage'
 import BookingListPage from '../Pages/User/BookingListPage'
+import UserProfilePage from '../Pages/User/UserProfilePage'
 
 
 function UserRouter() {
@@ -32,6 +33,7 @@ function UserRouter() {
 <Route path='/paymentconfirm' element={<PaymentConfirmPage/>}/>
 <Route path='/ordersuccess/:id' element={<OrderSuccessPage/>}/>
 <Route path='/bookinglist' element={<BookingListPage/>}/>
+<Route path ="/profile" element={<UserProfilePage/>}/>
 
 
  

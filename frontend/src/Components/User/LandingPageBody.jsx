@@ -20,7 +20,7 @@ const LandingPageBody = ({ selectedCategory }) => {
 
   useEffect(() => {
     let isMounted = true;
-
+    const userToken = localStorage.getItem('jwt');
     homePropertylist(currentPage, limit)
       .then((response) => {
         if (isMounted) {

@@ -18,7 +18,6 @@ function DashboardPage() {
     });
     useEffect(() => {
         fetchDashboardDetails().then(({ data }) => {
-            console.log(data);
             setDashboard({ revenueDetails: data.revenueDetails, bookingDetails: data.bookingDetails, total: data.total });
         }).catch((error) => {
             console.log(error);

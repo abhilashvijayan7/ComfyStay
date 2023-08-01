@@ -49,14 +49,12 @@ function OtpForgot() {
   // const input1 = location.inputs;
 
   const handleSubmit=async()=>{
-    console.log("handlesubmit");
   
     if (otp.length !== 4) {
      setErrorMessage('OTP must be 4 digit long')
       return;
     }else{
        const {data}= await verifyOtpForgot(otp)
-       console.log(data)
      if(!data.status){
      
       toast.error(data.message)

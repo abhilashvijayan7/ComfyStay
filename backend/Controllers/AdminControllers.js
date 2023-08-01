@@ -68,7 +68,6 @@ module.exports.updatePropertyStatus = async (req, res) => {
         // Get the user details associated with the property
         const property = await userPropertyModel.findById(propertyId).populate('userId');
         const user = property.userId;
-        console.log('user',user);
 
         // Send an email to the user
         const transporter = nodemailer.createTransport({
@@ -147,7 +146,7 @@ module.exports.getBookingDetails = async (req, res, next) => {
             if (bookings.length > 0) {
                 res.json({ status: true, bookings, totalCount, totalPages });
             } else {
-                res.json({ status: false });
+                res.json({ status: false , message:'No Booking'});
             }
         } else {
             res.json({ status: false, message: 'Something Went Wrong' });

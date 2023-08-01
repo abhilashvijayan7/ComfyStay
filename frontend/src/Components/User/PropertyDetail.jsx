@@ -23,7 +23,6 @@ function PropertyDetail() {
 
     viewProperty(id).then((response) => {
       if (response.data.status) {
-        console.log(response.data.property.address.houseName);
         setProperty(response.data.property)
 
       } else {
@@ -57,7 +56,9 @@ function PropertyDetail() {
             position: 'top-center'
           })
           setIsLoading(false)
+          navigate('/login');
         }
+
       })
     } catch (error) {
       setIsLoading(false)

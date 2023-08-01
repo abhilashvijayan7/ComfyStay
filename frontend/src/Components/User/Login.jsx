@@ -33,11 +33,12 @@ function Login() {
         try {
 
             const { data } = await login(inputs)
-            console.log(data.token);
             if (data.status) {
                 localStorage.setItem("jwt", data.token)
                 dispatch(setUserDetails(data.user))
+                
                 navigate('/')
+                window.location.reload(false);
             } else {
                 toast.error(data.message, {
                     position: 'top-center'

@@ -87,3 +87,19 @@ export const bookingDetailsApi = () => {
 export const cancelOrder = (id) => {
     return userInstance.post(`/cancelorder/${id}`)
 }
+export const userDetails = () => {
+    return userInstance.get('/getuserDetails')
+}
+
+export const editUserDetails = (values) => {
+    return userInstance.post('/edituserDetails', values)
+}
+
+export const changePasswordAPI = (values) => {
+    return userInstance.post('/changepassword', values)
+}
+
+export const userHeader = () => {
+    return userInstance.get("/")
+    
+}

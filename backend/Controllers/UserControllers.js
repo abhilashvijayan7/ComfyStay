@@ -47,7 +47,6 @@ module.exports.register = async (req, res) => {
         res.json({ message: 'This email already exist', status: false });
       } else {
         newUser = req.body;
-        console.log(`${newUser},aaaaaaaaa`);
         client.verify.v2.services(serviceID)
           .verifications.create({ to: `+91${phonenumber}`, channel: 'sms' });
         res.json({ status: true });
@@ -134,7 +133,6 @@ module.exports.forgotpassword = async (req, res) => {
 
 module.exports.verifyotpforgot = (req, res) => {
   const otpCode = req.body.otp;
-  console.log(otpCode);
   // if(!phonenumber){
   //     return res.json({ status: true, message: 'invalid verification'});
   // }
@@ -175,22 +173,18 @@ module.exports.resentotp = (req, res) => {
 };
 
 module.exports.resentotpsignup = (req, res) => {
-  console.log(newUser);
   client.verify.v2.services(serviceID)
     .verifications.create({ to: `+91${newUser.phonenumber}`, channel: 'sms' });
   res.json({ status: true, message: 'Otp resent success' });
 };
 
 module.exports.propertysubmit = async (req, res) => {
-  console.log('print req.body', req.body);
   try {
     const exist = await userPropertyModel.findOne({ propertynumber: req.body.propertynumber }).lean();
 
     if (exist) {
-      console.log('existtttttttttttt');
       res.json({ status: false, message: 'The property already exist' });
     } else {
-      console.log('not existtttt');
       const imagePath = req.files.image[0].path;
       // eslint-disable-next-line quotes
       const modifiedImagePath = imagePath.replace(/^public[\\/]+/, "");
@@ -325,7 +319,6 @@ module.exports.bookAProperty = (req, res) => {
       req.session.bookingDetails = req.body;
       req.session.propertyId = req.params.id;
 
-      console.log(req.body);
 
       return res.json({ status: true });
     }
@@ -490,3 +483,59 @@ module.exports.cancelOrder = async (req, res, next) => {
     console.log(error);
   }
 };
+
+module.exports.getDetails = async (req, res, next) => {
+  try {
+    const user = req.user;
+    res.json({ status: true, user });
+  } catch (error) {
+
+  }
+};
+
+module.exports.updateUserDetails = async (req, res, next) => {
+  try {
+    const User = req.user;
+    const { username, email } = req.body;
+    const userfound = await user.findOne({ _id: User._id });
+    const newUser = await user.findOneAndUpdate({ _id: User._id }, {
+      $set: {
+        username: username,
+        email: email
+      }
+    }, { new: true });
+    res.json({ status: true, message: 'Updated', newUser });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.changePassword = async (req, res, next) => {
+
+  try {
+    const User = req.user;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const passwordMatch = await bcrypt.compare(currentPassword, User.password);
+    const customer = await user.findOne({ _id: User._id });
+    if (passwordMatch) {
+      if (newPassword === confirmPassword) {
+        customer.password = hashPassword(newPassword) ;
+        const updatedUser = customer.save();
+        const token = await createToken(updatedUser._id);
+        res.json({ status: true, message: 'Password changed successfully', token });
+      } else {
+        res.json({ status: false, message: 'New password and confirm password do not match' });
+      }
+    } else {
+      res.json({ status: false, message: 'Current password is incorrect' });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.userHeader = (req, res, next) => {
+  const userdetails = req.user;
+  res.json({ status: true, user: userdetails });
+};
+

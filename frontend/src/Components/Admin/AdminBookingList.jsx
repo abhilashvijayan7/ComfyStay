@@ -32,6 +32,8 @@ function AdminBookingList() {
                     setTotalPages(response.data.totalPages);
                 } else {
                     setNoBookings(true)
+                    toast(response.data.message)
+
                 }
             })
         } catch (error) {
@@ -44,7 +46,6 @@ function AdminBookingList() {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
     const handleComplete = (orderId) => {
-        console.log(orderId)
         setShowModal(!showModal)
         setOrderId(orderId)
     }
