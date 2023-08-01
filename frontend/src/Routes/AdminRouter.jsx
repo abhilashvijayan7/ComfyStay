@@ -5,6 +5,7 @@ import AdminLoginPage from '../Pages/Admin/AdminLoginPage'
 import AdminHomePage from '../Pages/Admin/AdminHome'
 import AdminProperty from '../Pages/Admin/AdminProperty'
 import AdminBookingPage from '../Pages/Admin/AdminBookingPage'
+import AdminDashboardPage from '../Pages/Admin/AdminDashboardPage'
 
 
 function AdminRouter() {
@@ -15,6 +16,7 @@ function AdminRouter() {
         <Route path='/' element={<AdminHomePage/>}/>
         <Route path='/propertylist' element={<AdminProperty/>}/>
         <Route path='/bookinglist' element={<AdminBookingPage/>}/>
+        <Route path='/dashboard' element={<AdminDashboardPage/>}/>
 
       
         

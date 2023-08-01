@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const userPropertyModel = require('../Models/UserPropertyModel');
 const bookingModel =require ('../Models/BookingModel');
+const userModel = require('../Models/userModel');
 
 const admin = require('../Models/AdminModel');
 const bcrypt = require('bcrypt');
@@ -166,5 +167,85 @@ module.exports.completeOrder = async (req, res, next) => {
         res.json({ status: true, message: 'Booking completed!!', completedBooking });
     } catch (error) {
         console.log(error);
+    }
+};
+
+
+module.exports.fetchDashboardDetails = async (req, res, next) => {
+    try {
+        // Fetch revenue details for the last 7 days
+        const revenueDetails = await bookingModel.aggregate([
+            {
+                $match: {
+                    cancelStatus:false,
+                },
+            },
+            {
+                $group: {
+                    _id: { $dayOfWeek: { $toDate: '$booked_At' } },
+                    total: { $sum: '$amount' },
+                },
+            },
+            {
+                $sort: { _id: 1 },
+            },
+        ]);
+  
+  
+
+        const bookingDetails = await bookingModel.aggregate([
+            {
+                $group: {
+                    _id: {
+                        $cond: [
+                            { $and: [{ $eq: ['$completed', true] }, { $eq: ['$cancelStatus', false] }] }, // Check if booking is completed and not cancelled
+                            'completed',
+                            {
+                                $cond: [
+                                    { $and: [{ $eq: ['$completed', false] }, { $eq: ['$cancelStatus', true] }] }, // Check if booking is not completed and cancelled
+                                    'cancelled',
+                                    'active', // Booking is neither completed nor cancelled (active)
+                                ],
+                            },
+                        ],
+                    },
+                    count: { $sum: 1 },
+                },
+            },
+            {
+                $project: {
+                    _id: 1,
+                    count: 1,
+                },
+            },
+        ]);
+  
+        // Additional aggregation stages to get count for other status like 'active' and 'cancelled'
+        // ...
+  
+        // Fetch total users count
+        const totalUsers = await userModel.countDocuments();
+        totalBookings=await bookingModel.countDocuments();
+  
+        // Calculate total revenue and total completed bookings
+        const totalRevenue = revenueDetails.reduce((acc, item) => acc + item.total, 0);
+        // const totalCompletedBookings = bookingDetails.find((item) => item._id === 'completed')?.count || 0;
+  
+        // Construct the final data object to be sent to the frontend
+        const data = {
+            revenueDetails,
+            bookingDetails,
+            total: {
+                totalRevenue,
+                totalBookings,
+                totalUsers,
+            },
+        };
+  
+        res.json(data);
+  
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };

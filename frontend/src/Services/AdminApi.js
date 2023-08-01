@@ -30,4 +30,8 @@ export const updatePropertyStatus = (propertyId, status) => {
 export const completeOrder = (id) => {
     return adminInstance.post(`/completeorder/${id}`)
 }
+export const fetchDashboardDetails = () => {
+    return adminInstance.get(`/dashboardDetails`)
+}
+
 

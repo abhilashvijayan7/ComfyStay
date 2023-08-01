@@ -74,6 +74,7 @@ const LandingPageBody = ({ selectedCategory }) => {
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
           {/* Paste the provided loading animation SVG here */}
+          
           <button
             disabled=""
             type="button"

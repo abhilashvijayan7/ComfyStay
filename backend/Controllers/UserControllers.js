@@ -246,7 +246,7 @@ module.exports.propertylist = async (req, res) => {
     const totalCount = await userPropertyModel.find({ userId: userId }).countDocuments({});
     const totalPages = Math.ceil(totalCount / limit);
     const list = await userPropertyModel.find({ userId: userId }).sort({ _id: -1 }).skip(skip).limit(limit);
-    const completed = await bookingModel.find({ $and: [{ host_id: userId }, { completed: true }] });
+    const completed = await bookingModel.find({ $and: [{ host_id: userId }, { cancelStatus: false }] });
     if (completed) {
       completed.map((complete) => {
         cash = cash + complete.amount;

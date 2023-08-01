@@ -20,7 +20,7 @@ function AdminSidebar() {
   };
 
   const menus = [
-    { name: "Dashboard", link: "/", icon: AiOutlineAppstore },
+    { name: "Dashboard", link: "/admin/dashboard", icon: AiOutlineAppstore },
     // { name: "Customers", link: "/", icon: AiOutlineTeam },
     { name: "Properties", link: "/admin/propertylist", icon: AiOutlineMessage },
     { name: "Bookings", link: "/admin/bookinglist", icon: AiOutlinePicture },
