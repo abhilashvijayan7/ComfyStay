@@ -15,7 +15,7 @@ import PaymentConfirmPage from '../Pages/User/PaymentConfirmPage'
 import OrderSuccessPage from '../Pages/User/OrderSuccessPage'
 import BookingListPage from '../Pages/User/BookingListPage'
 import UserProfilePage from '../Pages/User/UserProfilePage'
-
+import Error from '../Components/Shared/Error'
 
 function UserRouter() {
   return (
@@ -34,6 +34,8 @@ function UserRouter() {
 <Route path='/ordersuccess/:id' element={<OrderSuccessPage/>}/>
 <Route path='/bookinglist' element={<BookingListPage/>}/>
 <Route path ="/profile" element={<UserProfilePage/>}/>
+<Route path ="*" element={<Error/>}/>
+
 
 
  

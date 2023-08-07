@@ -31,7 +31,7 @@ function AdminLogin() {
             if(data.status){
                  localStorage.setItem("adminjwt", data.token)
                 toast(data.message)
-                navigate('/admin/')
+                navigate('/admin/dashboard')
             }else{
                 toast.error(data.message, {
                     position: 'top-center'

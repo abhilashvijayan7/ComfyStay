@@ -252,7 +252,7 @@ function PropertyDetail() {
             </div>
 
 
-            {property.bookedstatus == 'true' ? <div className='flex flex-row items-center '>
+            {property.bookedstatus == true ? <div className='flex flex-row items-center '>
               <button className='bg-red-300 text-red-700 font-bold py-3 px-[7rem] h-full'>THIS PROPERTY IS CURRENTLY NOT AVAILABLE.TRY AGAIN LATER</button>
             </div> : <div className='flex flex-row items-center gap-12 '>
               <button onClick={!isLoading ? formik.handleSubmit : undefined} className=' bg-black text-white font-semibold py-3 px-[7rem] h-full '>
