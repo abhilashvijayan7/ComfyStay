@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
 import Dashboard from "../../Components/Admin/Dashboard/Dashboard";
-import PIeChart from "../../components/Admin/Dashboard/PIeChart";
-import BarChart from "../../components/Admin/Dashboard/BarChart";
+import PIeChart from "../../Components/Admin/Dashboard/PIeChart";
+import BarChart from "../../Components/Admin/Dashboard/BarChart";
 import { useState } from "react";
 import { fetchDashboardDetails } from "../../Services/AdminApi";
 
