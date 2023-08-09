@@ -71,6 +71,13 @@ const LandingPageBody = ({ selectedCategory }) => {
 
   return (
     <div className="lg:px-16">
+
+     { homeProperty==null && !isLoading && <div className='flex justify-center items-center bg-white h-screen'>
+                    NO PROPERTY
+
+                </div>}
+
+
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
           {/* Paste the provided loading animation SVG here */}

@@ -78,13 +78,14 @@ function BookingList() {
 
 
             <div className={bookings.length > 0 ? 'bg-[#cdd8e1] py-5' : 'bg-white py-5 h-screen flex justify-center items-center'}>
-                <div className="flex items-center justify-center sm:justify-center mt-1">
+
+                {!noBookings && bookings && <div className="flex items-center justify-center sm:justify-center mt-1">
                     <p style={{ fontSize: '24px' }} className="text-green-900 px-4 sm: text-xl sm:text-2xl font-sans font-semibold">
                         Bookings
                     </p>
 
                 </div>
-
+                }
 
                 {bookings.length > 0 ? bookings.map((booking) => (
 
