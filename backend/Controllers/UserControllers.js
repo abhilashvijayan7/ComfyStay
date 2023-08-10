@@ -315,7 +315,7 @@ module.exports.bookAProperty = (req, res) => {
 
     }
     else {
-
+      console.log(req.body);
       req.session.bookingDetails = req.body;
       req.session.propertyId = req.params.id;
 
