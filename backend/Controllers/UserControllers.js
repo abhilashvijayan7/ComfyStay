@@ -331,9 +331,14 @@ module.exports.paymentPage = async (req, res, next) => {
 
 
   try {
+
+
     const bookingDeatails = req.session.bookingDetails;
 
-
+    if(!bookingDeatails || !bookingDeatails.fromDate || !bookingDeatails.toDate){
+      // eslint-disable-next-line quotes
+      return res.json({status:false, message:"please provide from date and to date"});
+    }
     const fromDate = new Date(bookingDeatails.fromDate);
     const toDate = new Date(bookingDeatails.toDate);
     const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
