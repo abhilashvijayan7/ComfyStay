@@ -103,3 +103,12 @@ export const userHeader = () => {
     return userInstance.get("/")
     
 }
+
+export const bookingDetailApi = (page, limit) => {
+    return userInstance.get('/hostbookingdetails', {
+        params: {
+            limit,
+            page
+        }
+    })
+}

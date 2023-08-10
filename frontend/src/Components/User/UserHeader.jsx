@@ -76,10 +76,12 @@ function UserHeader() {
 
     navigate("/propertylist");
   };
-  const bookingList = () => {
 
-    navigate("/bookinglist");
+  const hostBookingList = () => {
+
+    navigate("/hostbookinglist");
   };
+  
   return (
     <div>
       <nav className="bg-white border-gray-500 px-2 sm:px-4 py-3 dark:bg-gray-800">
@@ -118,11 +120,11 @@ function UserHeader() {
                   </button>
                 </li><li>
                     <button
-                      onClick={bookingList}
+                      onClick={hostBookingList}
                       href="#"
                       className="block  py-2 pl-3 pr-4 md:text-lg text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-red-200 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                     >
-                      My bookings
+                      My Property bookings
                     </button>
                   </li></>
                 : null}
@@ -149,6 +151,10 @@ function UserHeader() {
                     </div>
                     <ul className="py-2" aria-labelledby="user-menu-button">
                       <li onClick={() => navigate("/profile")} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile
+                      </li>
+                      <li onClick={() => navigate("/bookinglist")} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">My bookings
+
+
                       </li>
 
                       {/* <li  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 cursor-pointer dark:hover:text-white">Get in touch

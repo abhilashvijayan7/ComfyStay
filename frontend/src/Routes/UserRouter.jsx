@@ -16,6 +16,7 @@ import OrderSuccessPage from '../Pages/User/OrderSuccessPage'
 import BookingListPage from '../Pages/User/BookingListPage'
 import UserProfilePage from '../Pages/User/UserProfilePage'
 import Error from '../Components/Shared/Error'
+import HostBookingListPage from '../Pages/User/HostBookingListPage'
 
 function UserRouter() {
   return (
@@ -35,6 +36,8 @@ function UserRouter() {
 <Route path='/bookinglist' element={<BookingListPage/>}/>
 <Route path ="/profile" element={<UserProfilePage/>}/>
 <Route path ="*" element={<Error/>}/>
+<Route path='/hostbookinglist' element={<HostBookingListPage/>}/>
+
 
 
 

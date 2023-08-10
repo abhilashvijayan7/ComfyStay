@@ -539,3 +539,32 @@ module.exports.userHeader = (req, res, next) => {
   res.json({ status: true, user: userdetails });
 };
 
+
+
+
+
+module.exports.getHostBookingDetails= async (req, res, next) => {
+  try {
+
+      const id = req.user._id;
+
+      const skip = (req.query.page - 1) * req.query.limit;
+      const limit = parseInt(req.query.limit);
+      const totalCount = await bookingModel.find({host_id:id}).countDocuments({});
+      const totalPages = Math.ceil(totalCount / limit);
+      const bookings = await bookingModel.find({host_id:id}).populate('property_id').populate('user_id').populate('host_id').sort({ _id: -1 }).skip(skip).limit(limit);
+      console.log(bookings,'bookingssssssssss');
+      if (bookings) {
+          if (bookings.length > 0) {
+              res.json({ status: true, bookings, totalCount, totalPages });
+          } else {
+              res.json({ status: false , message:'No Booking'});
+          }
+      } else {
+          res.json({ status: false, message: 'Something Went Wrong' });
+      }
+  } catch (error) {
+      console.log(error);
+      res.json({ status: false, message: 'Internal Server Error' });
+  }
+};
