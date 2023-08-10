@@ -25,12 +25,16 @@ mongoose.connect(process.env.DATABASE,{
 app.use(session({
     secret: process.env.SESSION_SECRET_KEY, // Add a secret key for session encryption
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+        domain: 'https://comfystay.netlify.app/'
+    }
 }));
 
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
+    // origin:'http://localhost:5173',
     credentials:true
 }));
 
