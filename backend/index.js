@@ -13,9 +13,6 @@ const session = require('express-session');
 
 app.use(bodyParser.json());
 const cookieParser = require('cookie-parser');
-app.listen(process.env.PORT,()=>{
-    console.log('Server Started on PORT ',process.env.PORT); 
-});
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
@@ -34,11 +31,10 @@ app.use(session({
 
 app.use(cors({
     origin:process.env.CLIENT_URL,
-    methods:['GET','POST','PUT'],
     credentials:true
 }));
 
-app.use(express.json());
+app.use(express.json({limit:'50mb'}));
 app.use(cookieParser());
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -47,4 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/',userRoutes);
 app.use('/admin',adminRoutes);
 
+app.listen(process.env.PORT,()=>{
+    console.log('Server Started on PORT ',process.env.PORT); 
+});
  
