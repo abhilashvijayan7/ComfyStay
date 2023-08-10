@@ -33,6 +33,7 @@ function hashPassword(password) {
   return bcrypt.hashSync(password, salt);
 }
 
+
 module.exports.register = async (req, res) => {
   // eslint-disable-next-line no-unused-vars
   const { username, phonenumber, email, password, cpassword } = req.body;
@@ -312,15 +313,19 @@ module.exports.bookAProperty = (req, res) => {
       return res.json({ status: false, message: 'Please select a future date for the end of the booking' });
     } else if (fromDate.getTime() === toDate.getTime()) {
       return res.json({ status: false, message: 'The booking should be for at least one day' });
-
     }
     else {
       console.log(req.body);
-      req.session.bookingDetails = req.body;
-      req.session.propertyId = req.params.id;
-
-
-      return res.json({ status: true });
+      // req.session.bookingDetails = req.body;
+      // req.session.propertyId = req.params.id;
+      let data= {bookingDetails:req.body, propertyId:req.params.id};
+    
+      return res.cookie('data',JSON.stringify(data) , {
+        httpOnly: true,
+        secure: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 30,
+        sameSite: 'none',
+      }).json({ status: true });
     }
   } catch (error) {
     console.log(error);
@@ -333,24 +338,26 @@ module.exports.paymentPage = async (req, res, next) => {
   try {
 
 
-    const bookingDeatails = req.session.bookingDetails;
+    const data = JSON.parse(req.cookies.data);
+    console.log(data);
+    const {bookingDetails, propertyId}=data;
 
-    if(!bookingDeatails || !bookingDeatails.fromDate || !bookingDeatails.toDate){
+    if(!bookingDetails || !bookingDetails.fromDate || !bookingDetails.toDate){
       // eslint-disable-next-line quotes
       return res.json({status:false, message:"please provide from date and to date"});
     }
-    const fromDate = new Date(bookingDeatails.fromDate);
-    const toDate = new Date(bookingDeatails.toDate);
+    const fromDate = new Date(bookingDetails.fromDate);
+    const toDate = new Date(bookingDetails.toDate);
     const timeDiff = Math.abs(toDate.getTime() - fromDate.getTime());
     const numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    const propertyId = req.session.propertyId;
+    // const propertyId = req.session.propertyId;
     const property = await userPropertyModel.findOne({ _id: propertyId });
     let totalAmount;
     if (property) {
 
       totalAmount = numberOfDays * property.homeprice;
 
-      res.json({ status: true, bookingDeatails, property, totalAmount, numberOfDays });
+      res.json({ status: true, bookingDetails, property, totalAmount, numberOfDays });
     } else {
       res.json({ status: false });
     }

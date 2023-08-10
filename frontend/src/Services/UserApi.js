@@ -55,7 +55,7 @@ export const propertylist = (page, limit)=>{
         }
     })
 }
-
+//kvjhdlkhvlkdshlvs
 export const bookPropertyApi = (values,id)=>{
     return userInstance.post(`/bookaproperty/${id}`,{...values},{ withCredentials: true })
 }
@@ -63,9 +63,9 @@ export const bookPropertyApi = (values,id)=>{
 export const PaymentDetailsApi = () => {
     return userInstance.get('/paymentdetails',{ withCredentials: true })
 }
+//fkdsjfgjlhsrkjhgusrg
 export const verifyPayment = (response, data, propertyid, totalAmountamount) => {
     const amount = totalAmountamount / 100;
-
     const payload = {
         ...response,
         ...data,

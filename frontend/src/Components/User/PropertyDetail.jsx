@@ -39,7 +39,6 @@ function PropertyDetail() {
     fromDate: "",
     toDate: "",
 
-
   }
 
 

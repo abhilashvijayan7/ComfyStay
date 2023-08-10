@@ -33,8 +33,8 @@ app.use(session({
 
 
 app.use(cors({
-    // origin:process.env.CLIENT_URL,
-    origin:'https://comfystay.netlify.app',
+    origin:process.env.CLIENT_URL,
+    // origin:'https://comfystay.netlify.app',
     credentials:true
 }));
 

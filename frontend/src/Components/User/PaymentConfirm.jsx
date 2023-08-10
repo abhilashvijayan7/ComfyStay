@@ -21,7 +21,7 @@ function PaymentConfirm() {
         try {
             PaymentDetailsApi().then((response) => {
                 if (response.data.status) {
-                    setBookingDetails(response.data.bookingDeatails)
+                    setBookingDetails(response.data.bookingDetails)
                     setProperty(response.data.property)
 
                     setTOtalAmount(response.data.totalAmount);
